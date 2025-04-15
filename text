@@ -1,0 +1,849 @@
+attachFile
+: 
+"C:\\fakepath\\man.jpg"
+budget
+: 
+"199"
+budgetType
+: 
+""
+category
+: 
+""
+description
+: 
+"I am working on a React project and struggling with state management using Redux. I have basic knowledge of React but find Redux confusing. I need mentorship to understand how to properly use Redux for global state management and optimize performance. Looking for a mentor who can guide me with real-world examples and best practices.\""
+email
+: 
+"vshrivastav534@gmail.com"
+name
+: 
+"Vishal"
+preferredTime
+: 
+"Monday to Friday after 7 PM"
+requirementTitle
+: 
+"Need Help with React State Management"
+
+
+
+// Mentor Profile Page
+// import React from 'react';
+// import Navbar from '../components/layout/Navbar';
+// import Footer from '../components/layout/Footer';
+
+// function MentorProfile() {
+//     // Hardcoded mentor data
+//     const mentor = {
+//         name: 'Sarah Johnson',
+//         bio: 'A passionate Senior React Developer with over 10 years of experience in building scalable web applications. I love mentoring students and helping them master modern JavaScript frameworks.',
+//         profilePicture: './assests/images/man.jpg',
+//         experience: '10+ years',
+//         hourlyRate: '50 Coins',
+//         availability: ['Weekdays 5-7 PM', 'Weekends 10 AM - 1 PM'],
+//         skills: ['React', 'Node.js', 'JavaScript', 'TypeScript', 'CSS', 'Git'],
+//         reviews: [
+//             {
+//                 studentName: 'John Doe',
+//                 rating: 5,
+//                 comment: 'Sarah was incredibly helpful with my React project. She explained hooks in a way that finally clicked!',
+//             },
+//             {
+//                 studentName: 'Emma Smith',
+//                 rating: 4,
+//                 comment: 'Great mentor, very knowledgeable. Could improve on time management during sessions.',
+//             },
+//         ],
+//     };
+
+//     return (
+//         <div className="min-h-screen bg-gray-900 text-gray-200 font-sans">
+//             {/* Header */}
+//             <Navbar />
+
+//             {/* Mentor Profile Section */}
+//             <section className="bg-gradient-to-br from-gray-800 via-gray-900 to-blue-900 pt-24 pb-20 min-h-screen">
+//                 <div className="container mx-auto px-6">
+//                     <div className="max-w-4xl mx-auto bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+//                         {/* Header Card */}
+//                         <div className="bg-gray-700 px-8 py-6 border-b border-gray-600">
+//                             <h2 className="text-3xl font-bold text-white">Mentor Profile</h2>
+//                             <p className="text-gray-400 mt-1">Meet your potential mentor.</p>
+//                         </div>
+
+//                         {/* Content */}
+//                         <div className="p-8 space-y-10">
+//                             {/* Basic Info */}
+//                             <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+//                                 <img
+//                                     src={mentor.profilePicture}
+//                                     alt={`${mentor.name}'s Profile`}
+//                                     className="w-32 h-32 rounded-full border-4 border-yellow-400 shadow-md"
+//                                 />
+//                                 <div className="text-center md:text-left">
+//                                     <h3 className="text-2xl font-semibold text-white">{mentor.name}</h3>
+//                                     <p className="text-gray-400 mt-1">{mentor.experience} Experience</p>
+//                                     <p className="text-gray-200 mt-2 leading-relaxed">{mentor.bio}</p>
+//                                 </div>
+//                             </div>
+
+//                             {/* Pricing & Availability */}
+//                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//                                 <div>
+//                                     <h3 className="text-sm text-gray-400 font-medium uppercase tracking-wide mb-2">
+//                                         Pricing
+//                                     </h3>
+//                                     <p className="text-lg text-white font-semibold">{mentor.hourlyRate} / Hour</p>
+//                                 </div>
+//                                 <div>
+//                                     <h3 className="text-sm text-gray-400 font-medium uppercase tracking-wide mb-2">
+//                                         Availability
+//                                     </h3>
+//                                     <ul className="space-y-1">
+//                                         {mentor.availability.map((slot, index) => (
+//                                             <li key={index} className="text-lg text-white">{slot}</li>
+//                                         ))}
+//                                     </ul>
+//                                 </div>
+//                             </div>
+
+//                             {/* Skills & Technologies */}
+//                             <div>
+//                                 <h3 className="text-sm text-gray-400 font-medium uppercase tracking-wide mb-2">
+//                                     Skills & Technologies
+//                                 </h3>
+//                                 <div className="flex flex-wrap gap-3">
+//                                     {mentor.skills.map((skill, index) => (
+//                                         <span
+//                                             key={index}
+//                                             className="bg-gray-700 text-yellow-400 px-3 py-1 rounded-full text-sm font-semibold"
+//                                         >
+//                                             {skill}
+//                                         </span>
+//                                     ))}
+//                                 </div>
+//                             </div>
+
+//                             {/* Student Reviews & Ratings */}
+//                             <div>
+//                                 <h3 className="text-sm text-gray-400 font-medium uppercase tracking-wide mb-4">
+//                                     Student Reviews & Ratings
+//                                 </h3>
+//                                 <div className="space-y-6">
+//                                     {mentor.reviews.map((review, index) => (
+//                                         <div key={index} className="bg-gray-700 p-4 rounded-lg">
+//                                             <div className="flex items-center justify-between mb-2">
+//                                                 <p className="text-lg font-semibold text-white">{review.studentName}</p>
+//                                                 <div className="flex">
+//                                                     {[...Array(5)].map((_, i) => (
+//                                                         <span
+//                                                             key={i}
+//                                                             className={`text-yellow-400 ${i < review.rating ? 'opacity-100' : 'opacity-50'}`}
+//                                                         >
+//                                                             ★
+//                                                         </span>
+//                                                     ))}
+//                                                 </div>
+//                                             </div>
+//                                             <p className="text-gray-200">{review.comment}</p>
+//                                         </div>
+//                                     ))}
+//                                 </div>
+//                             </div>
+
+//                             {/* Contact Button */}
+//                             <div className="flex justify-end">
+//                                 <button className="bg-yellow-400 text-gray-900 px-6 py-2 rounded-lg font-semibold shadow-md hover:bg-yellow-500 transform hover:scale-105 transition duration-300 text-sm">
+//                                     Contact Mentor
+//                                 </button>
+//                             </div>
+//                         </div>
+//                     </div>
+//                 </div>
+//             </section>
+
+//             {/* Footer */}
+//             <Footer />
+//         </div>
+//     );
+// }
+
+// export default MentorProfile;
+
+
+// Mentor Profile page 2
+// import React from 'react';
+// import Navbar from '../components/layout/Navbar';
+// import Footer from '../components/layout/Footer';
+
+// function MentorProfile() {
+//   // Hardcoded mentor data
+//   const mentor = {
+//     name: 'Sarah Johnson',
+//     title: 'Senior Software Engineer @ TechCorp',
+//     bio: '10 years in tech, from web development to data engineering and machine learning to product management.',
+//     profilePicture: './assests/images/man.jpg',
+//     location: 'Canada',
+//     rating: 5.0,
+//     reviewsCount: 10,
+//     status: 'Active this week',
+//     responseTime: 'Usually responds in half a day',
+//     skills: [
+//       'Machine Learning',
+//       'Data Science',
+//       'Software Engineering',
+//       'Product Development',
+//       'React',
+//       'Node.js',
+//       'Python',
+//     ],
+//     availability: ['Weekdays 5-7 PM', 'Weekends 10 AM - 1 PM'],
+//     hourlyRate: '50 Coins',
+//     reviews: [
+//       {
+//         studentName: 'John Doe',
+//         rating: 5,
+//         comment: 'Sarah was incredibly helpful with my React project. She explained hooks in a way that finally clicked!',
+//       },
+//       {
+//         studentName: 'Emma Smith',
+//         rating: 4,
+//         comment: 'Great mentor, very knowledgeable. Could improve on time management during sessions.',
+//       },
+//     ],
+//     membershipPlan: {
+//       name: 'Standard Plan',
+//       price: '$240 / month',
+//       description: 'I’ll be your go-to person and provide additional perspectives on tech and career topics.',
+//       features: [
+//         '2 calls per month (30min/call)',
+//         'Unlimited Q&A via chat',
+//         'Expect responses in 2 days',
+//       ],
+//       spotsLeft: 1,
+//     },
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gray-900 text-gray-200 font-sans">
+//       {/* Header */}
+//       <Navbar />
+
+//       {/* Mentor Profile Section */}
+//       <section className="bg-gradient-to-br from-gray-800 via-gray-900 to-blue-900 pt-24 pb-20 min-h-screen">
+//         <div className="container mx-auto px-6">
+//           <div className="flex flex-col md:flex-row gap-8">
+//             {/* Main Content */}
+//             <div className="flex-1">
+//               {/* Basic Info */}
+//               <div className="bg-gray-800 rounded-xl shadow-lg p-8 mb-8">
+//                 <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+//                   <div className="relative">
+//                     <img
+//                       src={mentor.profilePicture}
+//                       alt={`${mentor.name}'s Profile`}
+//                       className="w-32 h-32 rounded-full border-4 border-yellow-400 shadow-md"
+//                     />
+//                     <span className="absolute top-0 right-0 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
+//                       Top Mentor
+//                     </span>
+//                   </div>
+//                   <div className="text-center md:text-left flex-1">
+//                     <h2 className="text-3xl font-bold text-white">{mentor.name}</h2>
+//                     <p className="text-gray-400 mt-1">{mentor.title}</p>
+//                     <p className="text-gray-200 mt-2 leading-relaxed">{mentor.bio}</p>
+//                     <div className="mt-4 space-y-2">
+//                       <p className="text-gray-200 flex items-center justify-center md:justify-start">
+//                         <span className="mr-2">📍</span> {mentor.location}
+//                       </p>
+//                       <p className="text-gray-200 flex items-center justify-center md:justify-start">
+//                         <span className="mr-2">⭐</span> {mentor.rating} ({mentor.reviewsCount} reviews)
+//                       </p>
+//                       <p className="text-gray-200 flex items-center justify-center md:justify-start">
+//                         <span className="mr-2">🟢</span> {mentor.status}
+//                       </p>
+//                       <p className="text-gray-200 flex items-center justify-center md:justify-start">
+//                         <span className="mr-2">✔️</span> {mentor.responseTime}
+//                       </p>
+//                     </div>
+//                     <div className="mt-4 flex justify-center md:justify-start gap-3">
+//                       <button className="bg-gray-700 text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-600 transition duration-300 flex items-center gap-2">
+//                         <span>▶️</span> Play Intro
+//                       </button>
+//                       <button className="bg-gray-700 text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-600 transition duration-300 flex items-center gap-2">
+//                         <span>❤️</span> Save
+//                       </button>
+//                     </div>
+//                   </div>
+//                 </div>
+//               </div>
+
+//               {/* Skills & Technologies */}
+//               <div className="bg-gray-800 rounded-xl shadow-lg p-8 mb-8">
+//                 <h3 className="text-sm text-gray-400 font-medium uppercase tracking-wide mb-4">
+//                   Skills & Technologies
+//                 </h3>
+//                 <div className="flex flex-wrap gap-3">
+//                   {mentor.skills.map((skill, index) => (
+//                     <span
+//                       key={index}
+//                       className="bg-gray-700 text-yellow-400 px-3 py-1 rounded-full text-sm font-semibold"
+//                     >
+//                       {skill}
+//                     </span>
+//                   ))}
+//                 </div>
+//               </div>
+
+//               {/* Student Reviews & Ratings */}
+//               <div className="bg-gray-800 rounded-xl shadow-lg p-8">
+//                 <h3 className="text-sm text-gray-400 font-medium uppercase tracking-wide mb-4">
+//                   Student Reviews & Ratings
+//                 </h3>
+//                 <div className="space-y-6">
+//                   {mentor.reviews.map((review, index) => (
+//                     <div key={index} className="bg-gray-700 p-4 rounded-lg">
+//                       <div className="flex items-center justify-between mb-2">
+//                         <p className="text-lg font-semibold text-white">{review.studentName}</p>
+//                         <div className="flex">
+//                           {[...Array(5)].map((_, i) => (
+//                             <span
+//                               key={i}
+//                               className={`text-yellow-400 ${i < review.rating ? 'opacity-100' : 'opacity-50'}`}
+//                             >
+//                               ★
+//                             </span>
+//                           ))}
+//                         </div>
+//                       </div>
+//                       <p className="text-gray-200">{review.comment}</p>
+//                     </div>
+//                   ))}
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Sidebar - Membership Plan */}
+//             <div className="md:w-80 bg-gray-800 rounded-xl shadow-lg p-6 sticky top-24">
+//               <div className="flex justify-between items-center mb-4">
+//                 <h3 className="text-lg font-semibold text-white">{mentor.membershipPlan.name}</h3>
+//                 <span className="bg-blue-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
+//                   LinkedIn
+//                 </span>
+//               </div>
+//               <p className="text-2xl font-bold text-white mb-2">{mentor.membershipPlan.price}</p>
+//               <p className="text-gray-200 mb-4">{mentor.membershipPlan.description}</p>
+//               <ul className="space-y-2 mb-4">
+//                 {mentor.membershipPlan.features.map((feature, index) => (
+//                   <li key={index} className="text-gray-200 flex items-center gap-2">
+//                     <span className="text-green-500">●</span> {feature}
+//                   </li>
+//                 ))}
+//               </ul>
+//               <button className="w-full bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition duration-300">
+//                 Apply Now
+//               </button>
+//               <p className="text-gray-400 text-sm mt-2 text-center">
+//                 Only {mentor.membershipPlan.spotsLeft} spot left!
+//               </p>
+//             </div>
+//           </div>
+//         </div>
+//       </section>
+
+//       {/* Footer */}
+//       <Footer />
+//     </div>
+//   );
+// }
+
+// export default MentorProfile;
+
+// edite mentor profil 
+
+// import React from 'react';
+
+// function EditProfileModal({ onClose }) {
+//   return (
+//     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+//       <div className="bg-gray-800 rounded-xl shadow-lg p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+//         <div className="flex justify-between items-center mb-6">
+//           <h2 className="text-2xl font-bold text-white">Edit Profile</h2>
+//           <button
+//             onClick={onClose}
+//             className="text-gray-400 hover:text-gray-200 text-2xl"
+//           >
+//             &times;
+//           </button>
+//         </div>
+
+//         <form className="space-y-6">
+//           {/* Name */}
+//           <div>
+//             <label htmlFor="name" className="block text-sm text-gray-300 mb-2 font-medium">
+//               Name
+//             </label>
+//             <input
+//               type="text"
+//               id="name"
+//               defaultValue="Sarah Johnson"
+//               className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
+//               placeholder="Enter your name"
+//             />
+//           </div>
+
+//           {/* Bio */}
+//           <div>
+//             <label htmlFor="bio" className="block text-sm text-gray-300 mb-2 font-medium">
+//               Bio
+//             </label>
+//             <textarea
+//               id="bio"
+//               defaultValue="A passionate Senior React Developer with over 10 years of experience in building scalable web applications. I love mentoring students and helping them master modern JavaScript frameworks."
+//               className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
+//               placeholder="Tell us about yourself"
+//               rows="4"
+//             />
+//           </div>
+
+//           {/* Profile Picture */}
+//           <div>
+//             <label htmlFor="profilePicture" className="block text-sm text-gray-300 mb-2 font-medium">
+//               Profile Picture
+//             </label>
+//             <input
+//               type="file"
+//               id="profilePicture"
+//               className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
+//             />
+//           </div>
+
+//           {/* Experience */}
+//           <div>
+//             <label htmlFor="experience" className="block text-sm text-gray-300 mb-2 font-medium">
+//               Experience
+//             </label>
+//             <input
+//               type="text"
+//               id="experience"
+//               defaultValue="10+ years"
+//               className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
+//               placeholder="e.g., 10+ years"
+//             />
+//           </div>
+
+//           {/* Hourly Rate */}
+//           <div>
+//             <label htmlFor="hourlyRate" className="block text-sm text-gray-300 mb-2 font-medium">
+//               Hourly Rate
+//             </label>
+//             <input
+//               type="text"
+//               id="hourlyRate"
+//               defaultValue="50 Coins"
+//               className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
+//               placeholder="e.g., 50 Coins"
+//             />
+//           </div>
+
+//           {/* Availability */}
+//           <div>
+//             <label className="block text-sm text-gray-300 mb-2 font-medium">Availability</label>
+//             <input
+//               type="text"
+//               defaultValue="Weekdays 5-7 PM"
+//               className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300 mb-2"
+//               placeholder="e.g., Weekdays 5-7 PM"
+//             />
+//             <input
+//               type="text"
+//               defaultValue="Weekends 10 AM - 1 PM"
+//               className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
+//               placeholder="e.g., Weekends 10 AM - 1 PM"
+//             />
+//           </div>
+
+//           {/* Skills */}
+//           <div>
+//             <label className="block text-sm text-gray-300 mb-2 font-medium">Skills</label>
+//             <input
+//               type="text"
+//               defaultValue="React, Node.js, JavaScript, TypeScript, CSS, Git"
+//               className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
+//               placeholder="e.g., React, Node.js, JavaScript"
+//             />
+//           </div>
+
+//           {/* Save Button */}
+//           <div className="flex justify-end gap-4">
+//             <button
+//               type="button"
+//               onClick={onClose}
+//               className="bg-gray-600 text-gray-200 px-6 py-2 rounded-lg font-semibold hover:bg-gray-500 transition duration-300"
+//             >
+//               Cancel
+//             </button>
+//             <button
+//               type="submit"
+//               className="bg-yellow-400 text-gray-900 px-6 py-2 rounded-lg font-semibold shadow-md hover:bg-yellow-500 transform hover:scale-105 transition duration-300"
+//             >
+//               Save Changes
+//             </button>
+//           </div>
+//         </form>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default EditProfileModal;
+
+// import React from 'react';
+// import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+// import Home from './pages/Home'; // Adjust paths as needed
+// import Signup from './pages/Signup';
+// import Login from './pages/Login';
+// import RequestMentorship from './pages/RequestMentorship';
+// import MyRequirement from './pages/MyRequirement';
+// import MentorProfile from './pages/MentorProfile';
+// import UserProfile from './pages/UserProfile';
+// import MentorProfileCreation from './pages/MentorProfileCreation';
+
+// function App() {
+//   return (
+//     <Router>
+//       <Routes>
+//         <Route path="/" element={<Home />} />
+//         <Route path="/signup" element={<Signup />} />
+//         <Route path="/login" element={<Login />} />
+//         <Route path="/request-mentorship" element={<RequestMentorship />} />
+//         <Route path="/my-requirement" element={<MyRequirement />} />
+//         <Route path="/mentor-profile" element={<MentorProfile />} />
+//         <Route path="/user-profile" element={<UserProfile />} />
+//         <Route path="/mentor-profile-creation" element={<MentorProfileCreation />} />
+//       </Routes>
+//     </Router>
+//   );
+// }
+
+// export default App;
+
+// Import the functions you need from the SDKs you need
+// import { getAnalytics } from "firebase/analytics";
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+
+
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+    apiKey: "AIzaSyB-6Wj7L9jOki1belBQYPuha7sSP9gybMs",
+    authDomain: "teacheronclone.firebaseapp.com",
+    projectId: "teacheronclone",
+    storageBucket: "teacheronclone.appspot.com",
+    messagingSenderId: "746369829922",
+    appId: "1:746369829922:web:1294e550f759188df40e7b",
+    measurementId: "G-J7MH0LVVMT"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+// const analytics = getAnalytics(app);
+const auth = getAuth(app);
+
+export { auth };
+
+
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import Navbar from '../components/layout/Navbar';
+import Footer from '../components/layout/Footer';
+import { auth } from '../BACKEND/firebase.js';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+
+function Signup() {
+    // const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        mobileNumber: "",
+        password: "",
+        userType: ""
+    });
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+        if (formData.mobileNumber && formData.userType) {
+            const user = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+            console.log(user);
+        } else {
+            alert("Please fill all required fields!");
+        }
+    }
+
+    return (
+        <div className="min-h-screen bg-gray-900 text-gray-200 font-sans">
+            <Navbar />
+            <section className="bg-gradient-to-br from-gray-800 via-gray-900 to-blue-900 pt-24 pb-20 min-h-screen flex items-center">
+                <div className="container mx-auto px-6">
+                    <div className="max-w-md mx-auto bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                        <div className="bg-gray-700 px-8 py-6 border-b border-gray-600">
+                            <h2 className="text-3xl font-bold text-white">Sign Up</h2>
+                            <p className="text-gray-400 mt-1">Create your account to get started.</p>
+                        </div>
+                        <div className="p-8">
+                            <form className="space-y-6" onSubmit={handleSubmit}>
+                                <div>
+                                    <label htmlFor="name" className="block text-sm text-gray-400 font-medium uppercase tracking-wide mb-2">
+                                        Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={(e) => setFormData({
+                                            ...formData,
+                                            name: e.target.value
+                                        })}
+                                        required
+                                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
+                                        placeholder="Enter your name"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="email" className="block text-sm text-gray-400 font-medium uppercase tracking-wide mb-2">
+                                        Email
+                                    </label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={(e) => setFormData({
+                                            ...formData,
+                                            email: e.target.value
+                                        })}
+                                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
+                                        placeholder="Enter your email"
+
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="mobileNumber" className="block text-sm text-gray-400 font-medium uppercase tracking-wide mb-2">
+                                        Mobile Number
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="mobileNumber"
+                                        name="mobileNumber"
+                                        value={formData.mobileNumber}
+                                        onChange={(e) => setFormData({
+                                            ...formData,
+                                            mobileNumber: e.target.value
+                                        })}
+                                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
+                                        placeholder="Enter your number"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="password" className="block text-sm text-gray-400 font-medium uppercase tracking-wide mb-2">
+                                        Password
+                                    </label>
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        value={formData.password}
+                                        onChange={(e) => setFormData({
+                                            ...formData,
+                                            password: e.target.value
+                                        })}
+                                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
+                                        placeholder="Enter your password"
+                                        required
+                                    />
+                                </div>
+                                < div className="flex justify-between">
+                                    <div className="flex items-center">
+                                        <input
+                                            type="radio"
+                                            value="mentor"
+                                            name="userType"
+                                            onChange={(e) => setFormData({ ...formData, userType: e.target.value })}
+                                            className="mr-2"
+                                            required />
+                                        <p className="text-yellow-400 text-[14px]">Join as Mentor</p>
+                                    </div>
+                                    <div className="flex items-center">
+                                        <input
+                                            type="radio"
+                                            value="student"
+                                            name="userType"
+                                            onChange={(e) => setFormData({ ...formData, userType: e.target.value })}
+                                            className="mr-2"
+                                            required />
+                                        <p className="text-yellow-400 text-[14px]">Join as Student</p>
+                                    </div>
+                                </div>
+                                <div className="mt-6">
+                                    <p className="text-gray-400">Continue with Google</p>
+                                    <button className="w-full bg-gray-900 text-yellow-400 px-6 py-2 rounded-lg font-semibold shadow-md transform hover:scale-105 transition duration-300 mt-2">
+                                        Signup with Google
+                                    </button>
+                                </div>
+                                <div className="flex justify-end">
+                                    <button type="submit" className="w-full bg-yellow-400 text-gray-900 px-6 py-2 rounded-lg font-semibold shadow-md hover:bg-yellow-500 transform hover:scale-105 transition duration-300"
+                                    >
+                                        Sign Up
+                                    </button>
+                                </div>
+                            </form>
+                            <div className="mt-6 flex text-center justify-center items-center">
+                                <p className="text-gray-400">Already have an account?</p>
+                                <Link to="/login" className="text-yellow-400 hover:text-yellow-300 transition duration-300 ml-2">
+                                    Log in
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <Footer />
+        </div>
+    );
+}
+
+export default Signup;
+
+
+
+//   const [otp, setOtp] = useState("");
+//   const [confirmationResult, setConfirmationResult] = useState(null);
+//   const [error, setError] = useState("");
+
+//   const setUpRecaptcha = () => {
+//     try {
+//       // Existing recaptcha ko clear karein
+//       if (window.recaptchaVerifier) {
+//         window.recaptchaVerifier.clear();
+//       }
+
+//       // Naya verifier banayein
+//       window.recaptchaVerifier = new RecaptchaVerifier(
+//         auth, // Pehle parameter mein auth object pass karein
+//         "recaptcha-container",
+//         {
+//           size: "normal",
+//           callback: (response) => {
+//             console.log("reCAPTCHA solved");
+//           },
+//           "expired-callback": () => {
+//             console.log("reCAPTCHA expired");
+//             window.recaptchaVerifier.clear();
+//             setUpRecaptcha();
+//           },
+//         }
+//       );
+
+//       // Render karein
+//       window.recaptchaVerifier
+//         .render()
+//         .then(() => console.log("reCAPTCHA rendered"))
+//         .catch((err) => console.error("Render error:", err));
+//     } catch (error) {
+//       console.error("reCAPTCHA setup error:", error);
+//       setError("reCAPTCHA load nahi ho paya. Page refresh karein.");
+//     }
+//   };
+
+//   useEffect(() => {
+//     // Only initialize if auth is available
+//     if (auth) {
+//       setUpRecaptcha();
+//     }
+
+//     return () => {
+//       // Cleanup
+//       if (window.recaptchaVerifier) {
+//         window.recaptchaVerifier.clear();
+//       }
+//     };
+//   }, []); // Empty dependency array
+
+//   const onSendOtp = async () => {
+//     setError("");
+//     try {
+//       if (!auth) {
+//         setError("Authentication service unavailable");
+//         return;
+//       }
+
+//       if (!window.recaptchaVerifier) {
+//         setError("reCAPTCHA not initialized. Please try again.");
+//         return;
+//       }
+
+//       // Format phone number properly
+//       let phoneNumber = formData.mobileNumber;
+//       // Remove any non-digit characters
+//       phoneNumber = phoneNumber.replace(/\D/g, "");
+
+//       // If number starts with 0, remove it
+//       if (phoneNumber.startsWith("0")) {
+//         phoneNumber = phoneNumber.substring(1);
+//       }
+
+//       // If number doesn't start with country code, add it
+//       if (!phoneNumber.startsWith("91")) {
+//         phoneNumber = "91" + phoneNumber;
+//       }
+
+//       const fullPhoneNumber = `+${phoneNumber}`;
+
+//       // Validate phone number format
+//       if (!fullPhoneNumber.match(/^\+[1-9]\d{1,14}$/)) {
+//         throw new Error(
+//           "Invalid phone number format. Please enter a valid Indian phone number."
+//         );
+//       }
+
+//       const appVerifier = window.recaptchaVerifier;
+//       const result = await signInWithPhoneNumber(
+//         auth,
+//         fullPhoneNumber,
+//         appVerifier
+//       );
+//       setConfirmationResult(result);
+//       alert("OTP sent to your phone!");
+//     } catch (err) {
+//       setError(err.message);
+//       console.error(err);
+//       // Clear the reCAPTCHA on error
+//       if (window.recaptchaVerifier) {
+//         window.recaptchaVerifier.clear();
+//       }
+//     }
+//   };
+
+//   const onVerifyOtp = async () => {
+//     setError("");
+//     if (!confirmationResult) {
+//       setError("Request an OTP first.");
+//       return;
+//     }
+//     try {
+//       const result = await confirmationResult.confirm(otp);
+//       alert("Phone verified!");
+//       await registerUser(result.user);
+//     } catch (err) {
+//       setError("Invalid OTP");
+//       console.error(err);
+//     }
+//   };

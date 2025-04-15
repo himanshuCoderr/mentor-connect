@@ -1,0 +1,29 @@
+Account Creation (Sign Up Page)
+
+user (Name , email , password , mobile Number , userType(Mentor , Student)) or Continue With Google 
+
+if(Continue With Google ){
+    mobile number must 
+    user type must
+    becuase (name , email and password will be handled by google)
+
+    if (UserType and Mobile Number added){
+        then varify mobile number after google redirection
+        varify Number UserTypesing otp sent by server 
+
+        if(otp matches){
+            then create Account on Database
+        }
+    }   
+    
+}
+if(user chooses to add name email and password by self)
+{
+    then verify email mobile number using otps
+ }
+ if verified then create Account
+
+only Account Creation Then Will Work on Student hai ya Mentor
+
+is user type mentor -> mentor profiel Creation
+if user type student -> post requirments
