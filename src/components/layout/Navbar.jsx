@@ -55,12 +55,23 @@ const Navbar = () => {
           >
             Home
           </Link>
-          <Link
-            to="/postRequirment"
-            className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
-          >
-            Post Requirement
-          </Link>
+
+          {userType === "student" && (
+            <Link
+              to="/postRequirment"
+              className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
+            >
+              Post Requirement
+            </Link>
+          )}
+          {userType === "mentor" && (
+            <Link
+              to="/mentorDashboard"
+              className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
+            >
+              Mentor DashBoard
+            </Link>
+          )}
           <Link
             to="#"
             className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"

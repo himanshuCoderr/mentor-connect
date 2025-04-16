@@ -26,7 +26,7 @@ function RequestMentorship() {
       await setDoc(doc(db, "requirements", requirementId), requirement);
       console.log("Requirement submitted:", requirement);
 
-      navigate("/myRequirement");
+      navigate(`/myRequirement/${requirementId}`);
 
       setRequirement({
         requirementTitle: "",
@@ -64,6 +64,7 @@ function RequestMentorship() {
               className="grid grid-cols-1 md:grid-cols-2 gap-6"
               onSubmit={(e) => {
                 e.preventDefault();
+                handleSubmitForm();
               }}
             >
               {/* Left Column */}
@@ -196,8 +197,6 @@ function RequestMentorship() {
                   </label>
                   <input
                     type="file"
-                    id="file"
-                    value={requirement.attachFile}
                     onChange={(e) => {
                       setRequirement({
                         ...requirement,
@@ -261,7 +260,6 @@ function RequestMentorship() {
                 <button
                   type="submit"
                   className="bg-yellow-400 text-gray-900 px-8 py-3 rounded-lg font-semibold shadow-lg hover:bg-yellow-500 transform hover:scale-105 transition duration-300"
-                  onClick={handleSubmitForm}
                 >
                   Submit Request
                 </button>
