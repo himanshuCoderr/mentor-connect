@@ -1,22 +1,19 @@
 import React from "react";
-import Navbar from '../components/layout/Navbar'
-import Footer from '../components/layout/Footer'
-import HeroSection from '../components/layout/HeroSection'
-import FeaturesSection from '../components/layout/FeaturesSection'
-import Testimonials from '../components/layout/Testimonials'
-import CallToAction from '../components/layout/CallToAction'
-
+import MentorHome from "./MentorHomePage";
+import StudentHomePage from "./StudentHomePage";
+import { useState, useEffect } from "react";
 const Home = () => {
-    return (
-        <div className="min-h-screen bg-gray-900 text-gray-200 font-sans">
-            <Navbar />
-            <HeroSection />
-            <FeaturesSection />
-            <Testimonials />
-            <CallToAction />
-            <Footer />
-        </div>
-    );
+  const [userType, setUserType] = useState(null);
+  useEffect(() => {
+    const type = localStorage.getItem("userType");
+    setUserType(type);
+  });
+
+  return (
+    <div className="min-h-screen bg-gray-900 text-gray-200 font-sans">
+      {userType === "mentor" ? <MentorHome /> : <StudentHomePage />}
+    </div>
+  );
 };
 
 export default Home;

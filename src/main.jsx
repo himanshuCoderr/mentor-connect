@@ -12,13 +12,16 @@ import OTP from "./pages/Otp";
 import FindMentors from "./pages/FindMentors";
 import MentorDashboard from "./pages/MentorDashboard";
 import RequirementDetail from "./pages/RequirementDetail";
-
+import About from "./pages/About";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+  },
+  {
+    path: "/about",
+    element: <About />,
   },
   {
     path: "/findMentors",
@@ -29,7 +32,7 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/postRequirment",
+    path: "/postRequirement",
     element: <RequestMentorship />,
   },
   {

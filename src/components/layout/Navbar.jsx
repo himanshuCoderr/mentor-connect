@@ -7,32 +7,36 @@ const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [userEmail, setUserEmail] = useState(null);
   const [userType, setUserType] = useState(null);
+  const [userName, setUserName] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
+    // localStorage se user data lo
     const email = localStorage.getItem("userEmail");
     const type = localStorage.getItem("userType");
-    if (email) {
-      setUserEmail(email);
-    }
-    if (type) {
-      setUserType(type);
-    }
+    const name = localStorage.getItem("userName");
+    setUserEmail(email);
+    setUserType(type);
+    setUserName(name);
   }, []);
 
   const handleLogout = () => {
-    localStorage.clear();
+    localStorage.clear(); // Saara data clear
     setUserEmail(null);
     setUserType(null);
+    setUserName(null);
     navigate("/login");
   };
 
   return (
     <header className="bg-gray-900/90 backdrop-blur-md py-3 sm:py-4 shadow-md fixed w-full top-0 z-10">
       <div className="container mx-auto flex justify-between items-center px-4 sm:px-6">
-        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-yellow-400">
+        <Link
+          to="/"
+          className="text-xl sm:text-2xl md:text-3xl font-bold text-yellow-400"
+        >
           MentorConnect
-        </h1>
+        </Link>
 
         {/* Hamburger Icon */}
         <button
@@ -58,12 +62,22 @@ const Navbar = () => {
 
           {userType === "student" && (
             <Link
-              to="/postRequirment"
+              to="/postRequirement"
               className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
             >
               Post Requirement
             </Link>
           )}
+
+          {userType === "student" && (
+            <Link
+              to="/myRequirement"
+              className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
+            >
+              My Requirement
+            </Link>
+          )}
+
           {userType === "mentor" && (
             <Link
               to="/mentorDashboard"
@@ -73,19 +87,22 @@ const Navbar = () => {
             </Link>
           )}
           <Link
-            to="#"
+            to="/about"
             className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
           >
             About
           </Link>
           {userEmail ? (
             <div className="relative">
-              <button
-                onClick={() => setShowMenu(!showMenu)}
-                className="flex items-center py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
-              >
-                <i className="hover:text-gray-900/90 hover:bg-yellow-300 p-[10px] rounded-[50%] fa-solid fa-user"></i>
-              </button>
+              <div className="flex flex-col items-center space-y-1 sm:px-6">
+                <button
+                  onClick={() => setShowMenu(!showMenu)}
+                  className="text-base sm:text-lg hover:text-yellow-300 transition duration-300"
+                >
+                  <i className="hover:text-gray-900/90 hover:bg-yellow-300 p-[10px] rounded-full fa-solid fa-user text-white"></i>
+                </button>
+                <p className="text-white text-sm sm:text-base">{userName}</p>
+              </div>
               {/* Dropdown Menu */}
               {showMenu && (
                 <div className="absolute right-0 mt-2 w-30 bg-gray-800 rounded-md shadow-lg z-20">

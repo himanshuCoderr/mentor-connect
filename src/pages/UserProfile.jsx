@@ -3,23 +3,26 @@ import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 
 function UserProfile() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
   const [userEmail, setUserEmail] = useState(null);
   const [userName, setUserName] = useState(null);
+  const [UserProfilePhoto, setUserProfilePhoto] = useState(null);
 
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
     const name = localStorage.getItem("userName");
+    const profilePhoto = localStorage.getItem("userProfilePhoto");
 
     if (email) setUserEmail(email);
     if (name) setUserName(name);
+    if (profilePhoto) setUserProfilePhoto(UserProfilePhoto);
   }, []);
 
   // Hardcoded user data
   const user = {
     name: userName,
     email: userEmail,
-    profilePicture: "./assests/images/man2.webp",
+    profilePicture: UserProfilePhoto,
     bio: "A passionate learner looking to master web development and build real-world projects with the help of experienced mentors.",
     interests: ["React", "JavaScript", "CSS", "Python"],
     recentActivity: [

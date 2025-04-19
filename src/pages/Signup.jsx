@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import { auth, db } from "../BACKEND/firebase.js";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../BACKEND/firebase";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -14,12 +16,14 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 function Signup() {
   const navigate = useNavigate();
+  const [showPass, setShowPass] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     mobileNumber: "",
     password: "",
     userType: "",
+    profilePhoto: "",
   });
 
   async function registerUser(e) {
@@ -54,7 +58,24 @@ function Signup() {
           attempts++;
         }
 
+        // Add this validation before Firebase operations
+        if (!formData.userType) {
+          alert("Please select user type (Mentor/Student)");
+          return;
+        }
+
         // Step 4: Agar verify ho gaya to Firestore me save kar
+
+        let profileURL = "";
+        if (formData.profilePhoto) {
+          const imageRef = ref(
+            storage,
+            `profilePhotos/${Date.now()}-${formData.profilePhoto.name}`
+          );
+          await uploadBytes(imageRef, formData.profilePhoto);
+          profileURL = await getDownloadURL(imageRef);
+        }
+
         if (isVerified) {
           await setDoc(doc(db, "users", user.uid), {
             name: user.displayName || formData.name,
@@ -63,24 +84,30 @@ function Signup() {
             userType: formData.userType,
             emailVerified: true,
             createdAt: new Date(),
+            profilePhoto: profileURL,
           });
 
           alert("Signup successful! Your account is now verified.");
 
           if (formData.userType == "student") {
-            navigate("/postRequirment");
+            navigate("/postRequirement");
           } else if (formData.userType == "mentor") {
             navigate("/mentorProfileCreate");
           } else {
             navigate("/signup");
           }
 
-          localStorage.setItem("userName", user.displayName);
+          localStorage.setItem(
+            "userName",
+            user.displayName || formData.name || "User"
+          );
           localStorage.setItem("userEmail", user.email);
           localStorage.setItem("userAccessToken", user.uid);
           localStorage.setItem("userType", formData.userType);
+          localStorage.setItem("userProfilePhoto", user.photoURL);
 
           console.log("Firebase User:", user);
+          console.log("Profile photo file:", formData.profilePhoto);
         } else {
           alert(
             "Email not verified. Please verify your email and sign up again."
@@ -100,6 +127,7 @@ function Signup() {
       mobileNumber: "",
       password: "",
       userType: "",
+      profilePhoto: "",
     });
   }
 
@@ -117,7 +145,23 @@ function Signup() {
         const result = await signInWithPopup(auth, provider);
         const user = result.user;
 
+        // Add this validation before Firebase operations
+        if (!formData.userType) {
+          alert("Please select user type (Mentor/Student)");
+          return;
+        }
+
         // Save user to Firestore
+        let profileURL = "";
+        if (formData.profilePhoto) {
+          const imageRef = ref(
+            storage,
+            `profilePhotos/${Date.now()}-${formData.profilePhoto}`
+          );
+          await uploadBytes(imageRef, formData.profilePhoto);
+          profileURL = await getDownloadURL(imageRef);
+        }
+
         await setDoc(doc(db, "users", user.uid), {
           name: user.displayName || formData.name,
           email: user.email,
@@ -125,6 +169,7 @@ function Signup() {
           userType: formData.userType,
           emailVerified: user.emailVerified,
           createdAt: new Date(),
+          profilePhoto: profileURL,
         });
 
         alert("Google Signup Successful!");
@@ -133,16 +178,22 @@ function Signup() {
         if (formData.userType === "mentor") {
           navigate("/mentorProfileCreate");
         } else if (formData.userType === "student") {
-          navigate("/postRequirment");
+          navigate("/postRequirement");
         } else {
           navigate("/signup");
         }
 
-        localStorage.setItem("userName", user.displayName);
+        localStorage.setItem(
+          "userName",
+          user.displayName || formData.name || "User"
+        );
         localStorage.setItem("userEmail", user.email);
         localStorage.setItem("userAccessToken", user.uid);
         localStorage.setItem("userType", formData.userType);
+        localStorage.setItem("userProfilePhoto", user.photoURL);
+
         console.log("Firebase User:", user);
+        console.log("Profile photo file:", formData.profilePhoto);
       } else {
         alert("please fill the required field");
       }
@@ -165,10 +216,24 @@ function Signup() {
             </div>
             <div className="p-8">
               <form className="space-y-6" onSubmit={registerUser}>
-                <div
-                  id="recaptcha-container"
-                  className="flex justify-center mb-4"
-                ></div>
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="block text-sm text-gray-400 font-medium uppercase tracking-wide mb-2"
+                  >
+                    Add profile (optional)
+                  </label>
+                  <input
+                    type="file"
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        profilePhoto: e.target.files[0],
+                      })
+                    }
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
+                  />
+                </div>
                 <div>
                   <label
                     htmlFor="name"
@@ -178,7 +243,6 @@ function Signup() {
                   </label>
                   <input
                     type="text"
-                    id="name"
                     name="name"
                     value={formData.name}
                     onChange={(e) =>
@@ -238,7 +302,7 @@ function Signup() {
                     required
                   />
                 </div>
-                <div>
+                <div className="relative">
                   <label
                     htmlFor="password"
                     className="block text-sm text-gray-400 font-medium uppercase tracking-wide mb-2"
@@ -246,8 +310,7 @@ function Signup() {
                     Password
                   </label>
                   <input
-                    type="password"
-                    id="password"
+                    type={showPass ? "text" : "password"}
                     name="password"
                     value={formData.password}
                     onChange={(e) =>
@@ -260,7 +323,16 @@ function Signup() {
                     placeholder="Enter your password"
                     required
                   />
+                  {formData.password && (
+                    <i
+                      className={`absolute right-3 top-[45px] fa-solid ${
+                        showPass ? "fa-eye" : "fa-eye-slash"
+                      } text-gray-400 cursor-pointer`}
+                      onClick={() => setShowPass(!showPass)}
+                    ></i>
+                  )}
                 </div>
+
                 <div className="flex justify-between">
                   <div className="flex items-center">
                     <input

@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate();
+  const [showPass, setShowPass] = useState(null);
   const [signIn, setSignIn] = useState({
     userEmail: "",
     userPassword: "",
@@ -41,6 +42,7 @@ function Login() {
       localStorage.setItem("userEmail", user.email);
       localStorage.setItem("userAccessToken", user.uid);
       localStorage.setItem("userType", userData.userType);
+      localStorage.setItem("userProfilePhoto", userData.profilePhoto || "");
 
       alert("User Logged In Successfully!");
       console.log("Firestore Data:", userData);
@@ -48,7 +50,7 @@ function Login() {
       if (userData.userType === "mentor") {
         navigate("/mentorProfileCreate");
       } else if (userData.userType === "student") {
-        navigate("/postRequirment");
+        navigate("/postRequirement");
       }
     } catch (error) {
       console.error("Login Failed:", error.message);
@@ -86,6 +88,7 @@ function Login() {
       localStorage.setItem("userEmail", user.email);
       localStorage.setItem("userAccessToken", user.uid);
       localStorage.setItem("userType", userData.userType);
+      localStorage.setItem("userProfilePhoto", user.photoURL);
 
       alert("Login successful!");
       console.log("Firestore Data:", userData);
@@ -93,7 +96,7 @@ function Login() {
       if (userData.userType === "mentor") {
         navigate("/mentorProfileCreate");
       } else if (userData.userType === "student") {
-        navigate("/postRequirment");
+        navigate("/postRequirement");
       }
     } catch (error) {
       console.error("Google SignIn Error:", error.message);
@@ -139,12 +142,12 @@ function Login() {
               </div>
 
               {/* Password Field */}
-              <div>
+              <div className="relative">
                 <label htmlFor="password" className="block text-gray-300 mb-2">
                   Password
                 </label>
                 <input
-                  type="password"
+                  type={showPass ? "text" : "password"}
                   id="password"
                   value={signIn.userPassword}
                   className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
@@ -154,6 +157,14 @@ function Login() {
                   placeholder="Enter your password"
                   required
                 />
+                {signIn.userPassword && (
+                  <i
+                    className={`absolute right-3 top-[50px] fa-solid ${
+                      showPass ? "fa-eye" : "fa-eye-slash"
+                    } text-gray-400 cursor-pointer`}
+                    onClick={() => setShowPass(!showPass)}
+                  ></i>
+                )}
               </div>
 
               {/* Forgot Password Link */}
