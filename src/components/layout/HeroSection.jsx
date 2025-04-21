@@ -1,11 +1,11 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { LoginContext } from "../../Context/LoginContext";
 
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { useEffect } from 'react';
 const HeroSection = () => {
   const navigate = useNavigate();
-  const {loginState} = useContext(LoginContext);
+  const { loginState } = useContext(LoginContext);
 
   return (
     <section className="bg-gradient-to-br from-gray-800 via-gray-900 to-blue-900 pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20">

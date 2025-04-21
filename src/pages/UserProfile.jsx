@@ -1,17 +1,10 @@
-import React, { useState, useEffect } from "react";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import { useContext } from "react";
 import { LoginContext } from "../Context/LoginContext";
 function UserProfile() {
   // const [isModalOpen, setIsModalOpen] = useState(false);
-  const { userEmail, userName } = useContext(LoginContext);
-  const [UserProfilePhoto, setUserProfilePhoto] = useState(null);
-
-  useEffect(() => {
-    const profilePhoto = localStorage.getItem("userProfilePhoto");
-    if (profilePhoto) setUserProfilePhoto(profilePhoto);
-  }, []);
+  const { userEmail, userName, UserProfilePhoto } = useContext(LoginContext);
 
   // Hardcoded user data
   const user = {

@@ -11,9 +11,18 @@ import {
 } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { useContext } from "react";
+import { LoginContext } from "../Context/LoginContext.jsx";
 
 function Signup() {
   const navigate = useNavigate();
+  const {
+    setLoginState,
+    setUserEmail,
+    setUserName,
+    setUserType,
+    setUserProfilePhoto,
+  } = useContext(LoginContext);
   const [showPass, setShowPass] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(null);
@@ -74,7 +83,6 @@ function Signup() {
 
   // Cloudinary configuration
   const cloudName = "dfw9zclpa";
-  // const apiKey = "329838114473811";
   const uploadPreset = "ml_default";
 
   const uploadImageToCloudinary = async (file) => {
@@ -163,7 +171,7 @@ function Signup() {
         profilePhoto: profileURL,
       });
 
-      // Store user data in localStorage
+      // Local Storage
       localStorage.setItem("userName", formData.name || "User");
       localStorage.setItem("userEmail", formData.email);
       localStorage.setItem("userAccessToken", user.uid);
@@ -172,6 +180,13 @@ function Signup() {
         "userProfilePhoto",
         profileURL || user.photoURL || ""
       );
+
+      // Context state update
+      setUserName(formData.name);
+      setUserEmail(formData.email);
+      setUserType(formData.userType);
+      setUserProfilePhoto(profileURL || user.photoURL || "");
+      setLoginState(true);
 
       // Redirect based on user type
       if (formData.userType === "student") {
@@ -221,7 +236,7 @@ function Signup() {
         profilePhoto: profileURL,
       });
 
-      // Store user data in localStorage
+      // Local Storage
       localStorage.setItem(
         "userName",
         user.displayName || formData.name || "User"
@@ -233,6 +248,13 @@ function Signup() {
         "userProfilePhoto",
         profileURL || user.photoURL || ""
       );
+
+      // Context state update
+      setUserName(user.displayName || formData.name);
+      setUserEmail(user.email);
+      setUserType(formData.userType);
+      setLoginState(true);
+      setUserProfilePhoto(profileURL || user.photoURL || "");
 
       // Redirect based on user type
       if (formData.userType === "student") {

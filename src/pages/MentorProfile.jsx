@@ -6,13 +6,8 @@ import { LoginContext } from "../Context/LoginContext";
 
 function MentorProfile() {
   // Hardcoded mentor data
-  const { userName } = useContext(LoginContext);
-  const [UserProfilePhoto, setUserProfilePhoto] = useState(null);
+  const { userName, UserProfilePhoto } = useContext(LoginContext);
 
-  useEffect(() => {
-    const profilePhoto = localStorage.getItem("userProfilePhoto");
-    if (profilePhoto) setUserProfilePhoto(profilePhoto);
-  }, []);
 
   const mentor = {
     name: userName,
@@ -59,7 +54,7 @@ function MentorProfile() {
 
       {/* Mentor Profile Section */}
       <section className="bg-gradient-to-br from-gray-800 via-gray-900 to-blue-900 pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20 min-h-screen flex items-center">
-        <div className="container mx-auto px-4 sm:px-6">
+        <div className="container md:mt-6 mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto bg-gray-800 rounded-xl shadow-lg overflow-hidden">
             {/* Header Card */}
             <div className="bg-gray-700 px-4 sm:px-6 md:px-8 py-4 sm:py-6 border-b border-gray-600 flex flex-col sm:flex-row justify-between items-center gap-4">
