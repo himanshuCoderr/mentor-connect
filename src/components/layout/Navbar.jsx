@@ -1,30 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { LoginContext } from "../../Context/LoginContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [userEmail, setUserEmail] = useState(null);
-  const [userType, setUserType] = useState(null);
-  const [userName, setUserName] = useState(null);
-  const navigate = useNavigate();
+  const {
+    userType,
+    setUserType,
+    userEmail,
+    setUserEmail,
+    userName,
+    setUserName,
+    setLoginState,
+  } = useContext(LoginContext);
 
-  useEffect(() => {
-    // localStorage se user data lo
-    const email = localStorage.getItem("userEmail");
-    const type = localStorage.getItem("userType");
-    const name = localStorage.getItem("userName");
-    setUserEmail(email);
-    setUserType(type);
-    setUserName(name);
-  }, []);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.clear(); // Saara data clear
     setUserEmail(null);
     setUserType(null);
     setUserName(null);
+    setLoginState(false);
     navigate("/login");
   };
 

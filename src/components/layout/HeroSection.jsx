@@ -1,16 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useContext } from "react";
+import { LoginContext } from "../../Context/LoginContext";
 
 const HeroSection = () => {
   const navigate = useNavigate();
-  const [loginState, setLoginState] = useState(false);
-
-  useEffect(() => {
-    // localStorage se check karo user logged in hai ya nahi
-    const email = localStorage.getItem("userEmail");
-    setLoginState(!!email); // true agar email hai, else false
-  }, []);
+  const { loginState } = useContext(LoginContext);
 
   return (
     <section className="bg-gradient-to-br from-gray-800 via-gray-900 to-blue-900 pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20">

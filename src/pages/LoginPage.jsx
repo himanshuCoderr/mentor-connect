@@ -42,7 +42,10 @@ function Login() {
       localStorage.setItem("userEmail", user.email);
       localStorage.setItem("userAccessToken", user.uid);
       localStorage.setItem("userType", userData.userType);
-      localStorage.setItem("userProfilePhoto", userData.profilePhoto || "");
+      localStorage.setItem(
+        "userProfilePhoto",
+        userData.profilePhoto || user.photoURL || ""
+      );
 
       alert("User Logged In Successfully!");
       console.log("Firestore Data:", userData);
@@ -88,16 +91,23 @@ function Login() {
       localStorage.setItem("userEmail", user.email);
       localStorage.setItem("userAccessToken", user.uid);
       localStorage.setItem("userType", userData.userType);
-      localStorage.setItem("userProfilePhoto", user.photoURL);
+      localStorage.setItem(
+        "userProfilePhoto",
+        userData.profilePhoto || user.photoURL || ""
+      );
 
       alert("Login successful!");
-      console.log("Firestore Data:", userData);
       // Navigate based on userType
       if (userData.userType === "mentor") {
         navigate("/mentorProfileCreate");
       } else if (userData.userType === "student") {
         navigate("/postRequirement");
       }
+      console.log("Firestore Data:", userData);
+      console.log(
+        "Profile Photo set in localStorage:",
+        userData.profilePhoto || user.photoURL || ""
+      );
     } catch (error) {
       console.error("Google SignIn Error:", error.message);
       alert(error.message);

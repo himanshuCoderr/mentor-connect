@@ -1,17 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { LoginContext } from "../../Context/LoginContext";
 
 const FeaturesSection = () => {
   const navigate = useNavigate();
-  const [loginState, setLoginState] = useState(false);
-
-  useEffect(() => {
-    // localStorage se check karo user logged in hai ya nahi
-    const email = localStorage.getItem("userEmail");
-    setLoginState(!!email); // true agar email hai, else false
-  }, []);
+  const { loginState } = useContext(LoginContext);
 
   return (
     <section className="py-12 sm:py-16 md:py-20 bg-gray-800">
@@ -64,7 +59,10 @@ const FeaturesSection = () => {
             <div className="text-yellow-400 text-4xl sm:text-5xl mb-3 sm:mb-4">
               💸
             </div>
-            <Link to="/about" className="text-xl sm:text-2xl font-semibold text-white mb-3 sm:mb-4">
+            <Link
+              to="/about"
+              className="text-xl sm:text-2xl font-semibold text-white mb-3 sm:mb-4"
+            >
               Coin System
             </Link>
             <p className="text-sm sm:text-base text-gray-300">

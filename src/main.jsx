@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { LoginProvider } from "./Context/LoginContext";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/LoginPage";
@@ -71,6 +72,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <LoginProvider>
+      <RouterProvider router={router} />
+    </LoginProvider>
   </StrictMode>
 );

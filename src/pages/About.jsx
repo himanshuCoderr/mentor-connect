@@ -112,111 +112,92 @@ const AboutPage = () => {
             </div>
           </div>
 
-          {/* Dual Coin System */}
+          {/* Coin System Section */}
           <div className="max-w-6xl mx-auto bg-gray-800 rounded-xl shadow-lg p-8 mb-12">
             <h2 className="text-3xl font-bold text-center text-yellow-400 mb-8">
-              How Our Coin System Works
+              Our Dynamic Coin System
             </h2>
 
-            {/* Student Flow */}
-            <div className="mb-12">
-              <div className="flex items-center mb-6">
-                <div className="bg-blue-500 text-white w-10 h-10 rounded-full flex items-center justify-center mr-4 text-xl">
-                  👨‍🎓
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Student Side */}
+              <div className="bg-gray-700 p-6 rounded-lg border-l-4 border-blue-500">
+                <div className="flex items-center mb-4">
+                  <div className="bg-blue-500 text-white w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                    👨‍🎓
+                  </div>
+                  <h3 className="text-xl font-bold text-white">For Students</h3>
                 </div>
-                <h3 className="text-2xl font-bold text-white">For Students</h3>
+                <ul className="space-y-3 text-gray-300">
+                  <li className="flex items-start">
+                    <span className="text-yellow-400 mr-2">•</span>
+                    <span>
+                      Contact a mentor by paying coins based on their{" "}
+                      <strong>demand</strong>
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-yellow-400 mr-2">•</span>
+                    <span>
+                      Example: Low demand (~50 coins), High demand (~100+ coins)
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-yellow-400 mr-2">•</span>
+                    <span>
+                      Platform retains <strong>100% of the coins</strong>
+                    </span>
+                  </li>
+                </ul>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-6 mb-6">
-                {/* Step 1 */}
-                <div className="bg-gray-700 p-4 rounded-lg">
-                  <div className="bg-blue-400 text-gray-900 w-8 h-8 rounded-full flex items-center justify-center font-bold mb-2 mx-auto">
-                    1
+              {/* Mentor Side */}
+              <div className="bg-gray-700 p-6 rounded-lg border-l-4 border-green-500">
+                <div className="flex items-center mb-4">
+                  <div className="bg-green-500 text-white w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                    👨‍🏫
                   </div>
-                  <p className="text-gray-300 text-center text-sm">
-                    Find a mentor and click{" "}
-                    <span className="text-yellow-400">"Contact"</span>
-                  </p>
+                  <h3 className="text-xl font-bold text-white">For Mentors</h3>
                 </div>
-                {/* Step 2 */}
-                <div className="bg-gray-700 p-4 rounded-lg">
-                  <div className="bg-blue-400 text-gray-900 w-8 h-8 rounded-full flex items-center justify-center font-bold mb-2 mx-auto">
-                    2
-                  </div>
-                  <p className="text-gray-300 text-center text-sm">
-                    Pay <span className="text-yellow-400">60 coins</span> to
-                    unlock chat
-                  </p>
-                </div>
-                {/* Step 3 */}
-                <div className="bg-gray-700 p-4 rounded-lg">
-                  <div className="bg-blue-400 text-gray-900 w-8 h-8 rounded-full flex items-center justify-center font-bold mb-2 mx-auto">
-                    3
-                  </div>
-                  <p className="text-gray-300 text-center text-sm">
-                    Mentor receives{" "}
-                    <span className="text-yellow-400">48 coins</span> (80%)
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-gray-700 p-4 rounded-lg border-l-4 border-blue-400">
-                <p className="text-gray-300">
-                  <span className="font-bold text-blue-400">Example:</span> To
-                  message Vishal (React expert), you pay 60 coins. He gets 48
-                  coins, and 12 coins cover platform fees.
-                </p>
+                <ul className="space-y-3 text-gray-300">
+                  <li className="flex items-start">
+                    <span className="text-yellow-400 mr-2">•</span>
+                    <span>
+                      View student contacts by paying coins based on their{" "}
+                      <strong>level</strong>
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-yellow-400 mr-2">•</span>
+                    <span>
+                      Example: Regular level (~30 coins), Top-tier level (~60+
+                      coins)
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-yellow-400 mr-2">•</span>
+                    <span>
+                      Platform retains <strong>100% of the coins</strong>
+                    </span>
+                  </li>
+                </ul>
               </div>
             </div>
 
-            {/* Mentor Flow */}
-            <div>
-              <div className="flex items-center mb-6">
-                <div className="bg-green-500 text-white w-10 h-10 rounded-full flex items-center justify-center mr-4 text-xl">
-                  👨‍🏫
-                </div>
-                <h3 className="text-2xl font-bold text-white">For Mentors</h3>
-              </div>
-
-              <div className="grid md:grid-cols-3 gap-6 mb-6">
-                {/* Step 1 */}
-                <div className="bg-gray-700 p-4 rounded-lg">
-                  <div className="bg-green-400 text-gray-900 w-8 h-8 rounded-full flex items-center justify-center font-bold mb-2 mx-auto">
-                    1
-                  </div>
-                  <p className="text-gray-300 text-center text-sm">
-                    View student requests in your{" "}
-                    <span className="text-yellow-400">Dashboard</span>
-                  </p>
-                </div>
-                {/* Step 2 */}
-                <div className="bg-gray-700 p-4 rounded-lg">
-                  <div className="bg-green-400 text-gray-900 w-8 h-8 rounded-full flex items-center justify-center font-bold mb-2 mx-auto">
-                    2
-                  </div>
-                  <p className="text-gray-300 text-center text-sm">
-                    Pay <span className="text-yellow-400">40 coins</span> to see
-                    contact info
-                  </p>
-                </div>
-                {/* Step 3 */}
-                <div className="bg-gray-700 p-4 rounded-lg">
-                  <div className="bg-green-400 text-gray-900 w-8 h-8 rounded-full flex items-center justify-center font-bold mb-2 mx-auto">
-                    3
-                  </div>
-                  <p className="text-gray-300 text-center text-sm">
-                    Student gets{" "}
-                    <span className="text-yellow-400">20 coins</span> (50%)
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-gray-700 p-4 rounded-lg border-l-4 border-green-400">
-                <p className="text-gray-300">
-                  <span className="font-bold text-green-400">Example:</span> To
-                  contact Shelba (assignment help), you pay 40 coins. She gets
-                  20 coins, and 20 coins cover platform fees.
+            <div className="mt-8 bg-gray-900 p-4 rounded-lg border border-yellow-400">
+              <h4 className="text-yellow-400 font-bold mb-2 text-center">
+                Important Notes
+              </h4>
+              <div className="text-gray-300 text-center">
+                <p>• Coin costs vary based on mentor demand or student level</p>
+                <p>• No free coins - all connections require payment</p>
+                <p>
+                  • Coins must be purchased to initiate or access any contact
                 </p>
+                <p>
+                  • Payments are made directly to the platform for facilitating
+                  connections
+                </p>
+                <p>• Transfers happen instantly when connections are made</p>
               </div>
             </div>
           </div>
@@ -246,11 +227,12 @@ const AboutPage = () => {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-white mb-2">
-                      Fair for Everyone
+                      Fair & Value-Driven
                     </h3>
                     <p className="text-gray-400">
-                      Mentors earn more when students contact them (80%), but
-                      pay less to recruit students (50%).
+                      Coin costs reflect the value of connections: high-demand
+                      mentors or top-tier students require more coins, ensuring
+                      fair access to quality interactions.
                     </p>
                   </div>
                 </div>
@@ -276,7 +258,7 @@ const AboutPage = () => {
                     </h3>
                     <p className="text-gray-400">
                       1 Coin = ₹1. Buy bulk packs (e.g., 500 coins for ₹400) for
-                      discounts.
+                      discounts to access mentors or students.
                     </p>
                   </div>
                 </div>
@@ -329,7 +311,8 @@ const AboutPage = () => {
                       Global Access
                     </h3>
                     <p className="text-gray-400">
-                      No currency conversions. Coins work the same worldwide.
+                      No currency conversions. Coins work the same worldwide for
+                      seamless connections.
                     </p>
                   </div>
                 </div>

@@ -1,13 +1,10 @@
 import React from "react";
 import MentorHome from "./MentorHomePage";
 import StudentHomePage from "./StudentHomePage";
-import { useState, useEffect } from "react";
+import { useContext } from "react";
+import { LoginContext } from "../Context/LoginContext";
 const Home = () => {
-  const [userType, setUserType] = useState(null);
-  useEffect(() => {
-    const type = localStorage.getItem("userType");
-    setUserType(type);
-  });
+  const { userType } = useContext(LoginContext);
 
   return (
     <div className="min-h-screen bg-gray-900 text-gray-200 font-sans">
