@@ -5,7 +5,7 @@ import { LoginContext } from "../../Context/LoginContext";
 
 const HeroSection = () => {
   const navigate = useNavigate();
-  const { loginState } = useContext(LoginContext);
+  const {loginState} = useContext(LoginContext);
 
   return (
     <section className="bg-gradient-to-br from-gray-800 via-gray-900 to-blue-900 pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20">
