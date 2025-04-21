@@ -1,8 +1,8 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { LoginContext } from "../../Context/LoginContext";
 
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useEffect } from 'react';
 const HeroSection = () => {
   const navigate = useNavigate();
   const {loginState} = useContext(LoginContext);
