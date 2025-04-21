@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/layout/Navbar";
@@ -14,140 +14,239 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 function Signup() {
   const navigate = useNavigate();
+  const [showPass, setShowPass] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     mobileNumber: "",
     password: "",
     userType: "",
+    profilePhoto: null,
   });
+
+  useEffect(() => {
+    const { password } = formData;
+    if (!password) {
+      setPasswordStrength(null);
+      return;
+    }
+
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumbers = /\d/.test(password);
+    const hasSymbols = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    if (password.length < 8) {
+      setPasswordStrength(
+        "Your password is too short. For better protection, use at least 8 characters including letters and numbers."
+      );
+    } else if (
+      password.length >= 8 &&
+      !(hasUpperCase && hasLowerCase && hasNumbers)
+    ) {
+      setPasswordStrength(
+        "Good start! Try adding special characters and making it a bit longer to increase security."
+      );
+    } else if (
+      password.length >= 12 &&
+      hasUpperCase &&
+      hasLowerCase &&
+      hasNumbers &&
+      !hasSymbols
+    ) {
+      setPasswordStrength(
+        "Nice! Your password is getting strong. Add a mix of uppercase, lowercase, numbers & symbols for top security."
+      );
+    } else if (
+      password.length >= 16 &&
+      hasUpperCase &&
+      hasLowerCase &&
+      hasNumbers &&
+      hasSymbols
+    ) {
+      setPasswordStrength(
+        "Excellent! You've created a strong password. This level of strength is highly recommended for securing important accounts."
+      );
+    }
+  }, [formData.password]);
+
+  // Cloudinary configuration
+  const cloudName = "dfw9zclpa";
+  // const apiKey = "329838114473811";
+  const uploadPreset = "ml_default";
+
+  const uploadImageToCloudinary = async (file) => {
+    setUploading(true);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", uploadPreset);
+    formData.append("cloud_name", cloudName);
+
+    try {
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await response.json();
+      setUploading(false);
+      return data.secure_url;
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      setUploading(false);
+      return null;
+    }
+  };
 
   async function registerUser(e) {
     e.preventDefault();
     try {
-      if (formData.mobileNumber && formData.userType) {
-        const userResponse = await createUserWithEmailAndPassword(
-          auth,
-          formData.email,
-          formData.password
-        );
+      if (!formData.mobileNumber || !formData.userType) {
+        alert("Please fill all required fields");
+        return;
+      }
 
-        const user = userResponse.user;
-        console.log(user);
+      // Create user in Firebase Auth
+      const userResponse = await createUserWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      );
+      const user = userResponse.user;
 
-        // Step 2: Email Verification bhejna
-        await sendEmailVerification(user);
-        alert("Verification email sent. Please verify before proceeding.");
+      // Send verification email
+      await sendEmailVerification(user);
+      alert("Verification email sent. Please verify your email.");
 
-        // Step 3: Polling Mechanism (10 sec tak wait kar ke bar bar check karega)
-        let isVerified = false;
-        let attempts = 0;
+      // Check for email verification
+      let isVerified = false;
+      let attempts = 0;
 
-        while (attempts < 15) {
-          // 10 attempts tak check karega
-          await user.reload(); // Firebase se fresh data le ke aayega
-          if (user.emailVerified) {
-            isVerified = true;
-            break;
-          }
-          await new Promise((resolve) => setTimeout(resolve, 3000)); // 3 sec ka delay
-          attempts++;
+      while (attempts < 15) {
+        await user.reload();
+        if (user.emailVerified) {
+          isVerified = true;
+          break;
         }
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        attempts++;
+      }
 
-        // Step 4: Agar verify ho gaya to Firestore me save kar
-        if (isVerified) {
-          await setDoc(doc(db, "users", user.uid), {
-            name: user.displayName || formData.name,
-            email: formData.email,
-            mobileNumber: formData.mobileNumber,
-            userType: formData.userType,
-            emailVerified: true,
-            createdAt: new Date(),
-          });
+      if (!isVerified) {
+        alert("Email not verified. Please verify your email and try again.");
+        await deleteUser(user);
+        return;
+      }
 
-          alert("Signup successful! Your account is now verified.");
-
-          if (formData.userType == "student") {
-            navigate("/postRequirment");
-          } else if (formData.userType == "mentor") {
-            navigate("/mentorProfileCreate");
-          } else {
-            navigate("/signup");
-          }
-
-          localStorage.setItem("userName", user.displayName);
-          localStorage.setItem("userEmail", user.email);
-          localStorage.setItem("userAccessToken", user.uid);
-          localStorage.setItem("userType", formData.userType);
-
-          console.log("Firebase User:", user);
-        } else {
-          alert(
-            "Email not verified. Please verify your email and sign up again."
-          );
-          await deleteUser(user); // Agar verify nahi kare to account delete ho jayega
+      // Upload profile photo to Cloudinary if exists
+      let profileURL = "";
+      if (formData.profilePhoto) {
+        profileURL = await uploadImageToCloudinary(formData.profilePhoto);
+        if (!profileURL) {
+          throw new Error("Failed to upload profile photo");
         }
       }
+
+      // Save user data to Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        name: formData.name,
+        email: formData.email,
+        mobileNumber: formData.mobileNumber,
+        userType: formData.userType,
+        emailVerified: true,
+        createdAt: new Date(),
+        profilePhoto: profileURL,
+      });
+
+      // Store user data in localStorage
+      localStorage.setItem("userName", formData.name || "User");
+      localStorage.setItem("userEmail", formData.email);
+      localStorage.setItem("userAccessToken", user.uid);
+      localStorage.setItem("userType", formData.userType);
+      localStorage.setItem(
+        "userProfilePhoto",
+        profileURL || user.photoURL || ""
+      );
+
+      // Redirect based on user type
+      if (formData.userType === "student") {
+        navigate("/postRequirement");
+      } else if (formData.userType === "mentor") {
+        navigate("/mentorProfileCreate");
+      } else {
+        navigate("/signup");
+      }
+      console.log(user);
+      console.log("Profile Photo URL saved to Firestore:", profileURL);
+      alert("Signup successful!");
     } catch (error) {
       console.error("Signup Error:", error.message);
       alert(error.message);
     }
-
-    // reset
-    setFormData({
-      name: "",
-      email: "",
-      mobileNumber: "",
-      password: "",
-      userType: "",
-    });
   }
 
   async function googleSignUp(e) {
     e.preventDefault();
     try {
-      if (formData.mobileNumber && formData.userType) {
-        const provider = new GoogleAuthProvider();
-
-        // Force Google to always show account selection popup
-        provider.setCustomParameters({
-          prompt: "select_account",
-        });
-
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
-
-        // Save user to Firestore
-        await setDoc(doc(db, "users", user.uid), {
-          name: user.displayName || formData.name,
-          email: user.email,
-          mobileNumber: formData.mobileNumber,
-          userType: formData.userType,
-          emailVerified: user.emailVerified,
-          createdAt: new Date(),
-        });
-
-        alert("Google Signup Successful!");
-
-        // Navigate based on userType
-        if (formData.userType === "mentor") {
-          navigate("/mentorProfileCreate");
-        } else if (formData.userType === "student") {
-          navigate("/postRequirment");
-        } else {
-          navigate("/signup");
-        }
-
-        localStorage.setItem("userName", user.displayName);
-        localStorage.setItem("userEmail", user.email);
-        localStorage.setItem("userAccessToken", user.uid);
-        localStorage.setItem("userType", formData.userType);
-        console.log("Firebase User:", user);
-      } else {
-        alert("please fill the required field");
+      if (!formData.mobileNumber || !formData.userType) {
+        alert("Please fill all required fields");
+        return;
       }
+
+      const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: "select_account" });
+
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      // Upload custom profile photo if selected
+      let profileURL = user.photoURL || "";
+      if (formData.profilePhoto) {
+        profileURL = await uploadImageToCloudinary(formData.profilePhoto);
+      }
+
+      // Save user data to Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        name: user.displayName || formData.name,
+        email: user.email,
+        mobileNumber: formData.mobileNumber,
+        userType: formData.userType,
+        emailVerified: user.emailVerified,
+        createdAt: new Date(),
+        profilePhoto: profileURL,
+      });
+
+      // Store user data in localStorage
+      localStorage.setItem(
+        "userName",
+        user.displayName || formData.name || "User"
+      );
+      localStorage.setItem("userEmail", user.email);
+      localStorage.setItem("userAccessToken", user.uid);
+      localStorage.setItem("userType", formData.userType);
+      localStorage.setItem(
+        "userProfilePhoto",
+        profileURL || user.photoURL || ""
+      );
+
+      // Redirect based on user type
+      if (formData.userType === "student") {
+        navigate("/postRequirement");
+      } else if (formData.userType === "mentor") {
+        navigate("/mentorProfileCreate");
+      }
+
+      alert("Google Signup Successful!");
+      console.log("Profile Photo URL saved to Firestore:", profileURL);
+      console.log(user);
     } catch (error) {
-      console.error("Error Signing In:", error.message);
+      console.error("Google Signup Error:", error.message);
+      alert(error.message);
     }
   }
 
@@ -165,33 +264,47 @@ function Signup() {
             </div>
             <div className="p-8">
               <form className="space-y-6" onSubmit={registerUser}>
-                <div
-                  id="recaptcha-container"
-                  className="flex justify-center mb-4"
-                ></div>
+                <div>
+                  <label
+                    htmlFor="profilePhoto"
+                    className="block text-sm text-gray-400 font-medium uppercase tracking-wide mb-2"
+                  >
+                    Profile Photo {uploading && "(Uploading...)"}
+                  </label>
+                  <input
+                    type="file"
+                    id="profilePhoto"
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        profilePhoto: e.target.files[0],
+                      })
+                    }
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
+                    accept="image/*"
+                  />
+                </div>
+
                 <div>
                   <label
                     htmlFor="name"
                     className="block text-sm text-gray-400 font-medium uppercase tracking-wide mb-2"
                   >
-                    Name
+                    Full Name
                   </label>
                   <input
                     type="text"
                     id="name"
-                    name="name"
                     value={formData.name}
                     onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        name: e.target.value,
-                      })
+                      setFormData({ ...formData, name: e.target.value })
                     }
                     required
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
                     placeholder="Enter your name"
                   />
                 </div>
+
                 <div>
                   <label
                     htmlFor="email"
@@ -202,19 +315,16 @@ function Signup() {
                   <input
                     type="email"
                     id="email"
-                    name="email"
                     value={formData.email}
                     onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        email: e.target.value,
-                      })
+                      setFormData({ ...formData, email: e.target.value })
                     }
+                    required
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
                     placeholder="Enter your email"
-                    required
                   />
                 </div>
+
                 <div>
                   <label
                     htmlFor="mobileNumber"
@@ -223,22 +333,18 @@ function Signup() {
                     Mobile Number
                   </label>
                   <input
-                    type="text"
+                    type="tel"
                     id="mobileNumber"
-                    name="mobileNumber"
                     value={formData.mobileNumber}
                     onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        mobileNumber: e.target.value,
-                      })
+                      setFormData({ ...formData, mobileNumber: e.target.value })
                     }
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
-                    placeholder="Enter your number"
                     required
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
+                    placeholder="Enter your phone number"
                   />
                 </div>
-                <div>
+                <div className="relative">
                   <label
                     htmlFor="password"
                     className="block text-sm text-gray-400 font-medium uppercase tracking-wide mb-2"
@@ -246,79 +352,132 @@ function Signup() {
                     Password
                   </label>
                   <input
-                    type="password"
+                    type={showPass ? "text" : "password"}
                     id="password"
-                    name="password"
                     value={formData.password}
                     onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        password: e.target.value,
-                      })
+                      setFormData({ ...formData, password: e.target.value })
                     }
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
-                    placeholder="Enter your password"
                     required
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
+                    placeholder="Create a password"
                   />
+                  {formData.password && (
+                    <button
+                      type="button"
+                      className="absolute right-3 top-[42px] text-gray-400 hover:text-yellow-400"
+                      onClick={() => setShowPass(!showPass)}
+                    >
+                      {showPass ? (
+                        <i className="fa-solid fa-eye-slash"></i>
+                      ) : (
+                        <i className="fa-solid fa-eye"></i>
+                      )}
+                    </button>
+                  )}
+                  {formData.password && (
+                    <div>
+                      <p
+                        className={`text-xs mt-2 ${
+                          formData.password.length < 8
+                            ? "text-red-400"
+                            : formData.password.length < 12
+                            ? "text-yellow-400"
+                            : "text-green-400"
+                        }`}
+                      >
+                        {passwordStrength}
+                      </p>
+                      <div className="w-full bg-gray-700 h-1 mt-1">
+                        <div
+                          className={`h-full ${
+                            formData.password.length < 8
+                              ? "bg-red-500 w-1/4"
+                              : formData.password.length < 12
+                              ? "bg-yellow-500 w-2/4"
+                              : "bg-green-500 w-full"
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
+
                 <div className="flex justify-between">
                   <div className="flex items-center">
                     <input
                       type="radio"
+                      id="mentor"
                       value="mentor"
                       name="userType"
+                      checked={formData.userType === "mentor"}
                       onChange={(e) =>
                         setFormData({ ...formData, userType: e.target.value })
                       }
                       className="mr-2"
                       required
                     />
-                    <p className="text-yellow-400 text-[14px]">
+                    <label htmlFor="mentor" className="text-yellow-400 text-sm">
                       Join as Mentor
-                    </p>
+                    </label>
                   </div>
                   <div className="flex items-center">
                     <input
                       type="radio"
+                      id="student"
                       value="student"
                       name="userType"
+                      checked={formData.userType === "student"}
                       onChange={(e) =>
                         setFormData({ ...formData, userType: e.target.value })
                       }
                       className="mr-2"
                       required
                     />
-                    <p className="text-yellow-400 text-[14px]">
+                    <label
+                      htmlFor="student"
+                      className="text-yellow-400 text-sm"
+                    >
                       Join as Student
-                    </p>
+                    </label>
                   </div>
                 </div>
+
                 <div className="mt-6">
-                  <p className="text-gray-400">Continue with Google</p>
+                  <p className="text-gray-400 mb-2">Continue with Google</p>
                   <button
-                    className="w-full bg-gray-900 text-yellow-400 px-6 py-2 rounded-lg font-semibold shadow-md transform hover:scale-105 transition duration-300 mt-2"
+                    type="button"
                     onClick={googleSignUp}
+                    className="w-full flex items-center justify-center gap-2 bg-gray-900 text-yellow-400 px-6 py-2 rounded-lg font-semibold hover:bg-gray-800 transition duration-300"
                   >
-                    Signup with Google
+                    <i className="fa-brands fa-google"></i>
+                    Sign up with Google
                   </button>
                 </div>
-                <div className="flex justify-end">
+
+                <div>
                   <button
                     type="submit"
-                    className="w-full bg-yellow-400 text-gray-900 px-6 py-2 rounded-lg font-semibold shadow-md hover:bg-yellow-500 transform hover:scale-105 transition duration-300"
+                    disabled={uploading}
+                    className={`w-full bg-yellow-400 text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-yellow-500 transition duration-300 ${
+                      uploading ? "opacity-70 cursor-not-allowed" : ""
+                    }`}
                   >
-                    Sign Up
+                    {uploading ? "Processing..." : "Create Account"}
                   </button>
                 </div>
               </form>
-              <div className="mt-6 flex text-center justify-center items-center">
-                <p className="text-gray-400">Already have an account?</p>
-                <Link
-                  to="/login"
-                  className="text-yellow-400 hover:text-yellow-300 transition duration-300 ml-2"
-                >
-                  Log in
-                </Link>
+
+              <div className="mt-6 text-center">
+                <p className="text-gray-400">
+                  Already have an account?{" "}
+                  <Link
+                    to="/login"
+                    className="text-yellow-400 hover:text-yellow-300 transition duration-300"
+                  >
+                    Log in
+                  </Link>
+                </p>
               </div>
             </div>
           </div>

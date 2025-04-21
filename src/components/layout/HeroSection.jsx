@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -45,17 +46,17 @@ const HeroSection = () => {
                     </div>
                 </div>
 
-                {/* Image */}
-                <div className="md:w-1/2 mt-8 sm:mt-10 md:mt-0 px-4 sm:px-0">
-                    <img
-                        src="bv"
-                        alt="Coding Illustration"
-                        className="rounded-lg shadow-lg w-full max-w-md mx-auto"
-                    />
-                </div>
-            </div>
-        </section>
-    );
+        {/* Image */}
+        <div className="md:w-1/2 mt-8 sm:mt-10 md:mt-0 px-4 sm:px-0">
+          <img
+            src="bv"
+            alt="Coding Illustration"
+            className="rounded-lg shadow-lg w-full max-w-md mx-auto"
+          />
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default HeroSection;

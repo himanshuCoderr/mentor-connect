@@ -224,7 +224,7 @@ function RequirementDetail() {
                   </button>
                   {showContact && (
                     <p className="text-gray-300 mt-4">
-                      Mobile Number : 7289975427
+                      Mobile Number : 9874635249
                     </p>
                   )}
                 </div>

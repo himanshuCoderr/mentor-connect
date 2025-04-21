@@ -1,22 +1,23 @@
-import { useState, useEffect } from "react";
-
+import { useState, useEffect, useContext } from "react";
 import React from "react";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
+import { LoginContext } from "../Context/LoginContext";
 
 function MentorProfile() {
   // Hardcoded mentor data
-  const [mentorName, setMentorName] = useState(null);
+  const { userName } = useContext(LoginContext);
+  const [UserProfilePhoto, setUserProfilePhoto] = useState(null);
 
   useEffect(() => {
-    const name = localStorage.getItem("userName");
-    if (name) setMentorName(name);
+    const profilePhoto = localStorage.getItem("userProfilePhoto");
+    if (profilePhoto) setUserProfilePhoto(profilePhoto);
   }, []);
-  
+
   const mentor = {
-    name: mentorName,
+    name: userName,
     bio: "A passionate Senior React Developer with over 10 years of experience in building scalable web applications. I love mentoring students and helping them master modern JavaScript frameworks.",
-    profilePicture: "./assests/images/man.jpg",
+    profilePicture: UserProfilePhoto,
     experience: "10+ years",
     hourlyRate: "50 Coins",
     availability: ["Weekdays 5-7 PM", "Weekends 10 AM - 1 PM"],
@@ -253,5 +254,3 @@ function MentorProfile() {
 }
 
 export default MentorProfile;
-
-

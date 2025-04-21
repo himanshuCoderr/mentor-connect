@@ -1,40 +1,20 @@
+import React from "react";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { doc, onSnapshot } from "firebase/firestore";
-import { db } from "../BACKEND/firebase"; // apna firebase config path daal do
 
 function MyRequirement() {
-  const { requirementId } = useParams();
-  const [error, setError] = useState(null);
-  const [myrequirement, setMyrequirement] = useState(null);
-
-  useEffect(() => {
-    if (!requirementId) {
-      setError("No requirement ID provided");
-      return;
-    }
-
-    const unsub = onSnapshot(
-      doc(db, "requirements", requirementId),
-      (docSnap) => {
-        if (docSnap.exists()) {
-          setMyrequirement({ id: docSnap.id, ...docSnap.data() });
-          setError(null);
-        } else {
-          setError("Requirement not found");
-          setMyrequirement(null);
-        }
-      },
-      (error) => {
-        console.error("Error fetching requirement:", error);
-        setError("Failed to load requirement");
-      }
-    );
-
-    return () => unsub();
-  }, [requirementId]);
+  const requirement = {
+    title: "Need help with React",
+    description:
+      "I’m struggling with React hooks and state management. Need a mentor to guide me through a small project.",
+    category: "Project Guidance",
+    budget: "500",
+    budgetType: "Per Hour",
+    preferredTime: "Weekdays 5-7 PM",
+    file: "project-details.pdf",
+    studentName: "John Doe",
+    studentEmail: "john.doe@example.com",
+  };
 
   const mentor = {
     name: "Sarah Johnson",
@@ -49,7 +29,7 @@ function MyRequirement() {
 
       {/* My Requirement Section */}
       <section className="bg-gradient-to-br from-gray-800 via-gray-900 to-blue-900 pt-24 pb-20 min-h-screen flex items-center overflow-hidden">
-        <div className="container mx-auto px-6 max-w-screen-lg">
+        <div className="container mx-auto lg:mt-8 px-6 max-w-screen-lg">
           <div className="max-w-full sm:max-w-2xl md:max-w-4xl mx-auto bg-gray-800 rounded-xl shadow-lg overflow-hidden">
             {/* Header Card */}
             <div className="bg-gray-700 text-center px-4 py-4 sm:px-8 sm:py-6 border-b border-gray-600">
@@ -71,7 +51,7 @@ function MyRequirement() {
                       Title
                     </h3>
                     <p className="text-lg sm:text-xl text-white font-semibold">
-                      {myrequirement.title}
+                      {requirement.title}
                     </p>
                   </div>
                   <div>
@@ -79,7 +59,7 @@ function MyRequirement() {
                       Description
                     </h3>
                     <p className="text-base sm:text-lg text-gray-200 leading-relaxed">
-                      {myrequirement.description}
+                      {requirement.description}
                     </p>
                   </div>
                   <div>
@@ -87,7 +67,7 @@ function MyRequirement() {
                       Preferred Time
                     </h3>
                     <p className="text-base sm:text-lg text-white">
-                      {myrequirement.preferredTime || "Not specified"}
+                      {requirement.preferredTime || "Not specified"}
                     </p>
                   </div>
                   <div>
@@ -95,12 +75,12 @@ function MyRequirement() {
                       Attached File
                     </h3>
                     <p className="text-base sm:text-lg text-white">
-                      {myrequirement.file ? (
+                      {requirement.file ? (
                         <a
                           href="#"
                           className="text-yellow-400 hover:text-yellow-300 transition duration-300"
                         >
-                          {myrequirement.file}
+                          {requirement.file}
                         </a>
                       ) : (
                         "None"
@@ -116,7 +96,7 @@ function MyRequirement() {
                       Category
                     </h3>
                     <p className="text-base sm:text-lg text-white">
-                      {myrequirement.category}
+                      {requirement.category}
                     </p>
                   </div>
                   <div>
@@ -124,12 +104,12 @@ function MyRequirement() {
                       Budget
                     </h3>
                     <p className="text-base sm:text-lg text-white">
-                      {myrequirement.budget
-                        ? `${myrequirement.budget} Coins`
+                      {requirement.budget
+                        ? `${requirement.budget} Coins`
                         : "Not specified"}
-                      {myrequirement.budget && myrequirement.budgetType && (
+                      {requirement.budget && requirement.budgetType && (
                         <span className="text-gray-400 text-xs sm:text-sm ml-2">
-                          ({myrequirement.budgetType})
+                          ({requirement.budgetType})
                         </span>
                       )}
                     </p>
@@ -139,10 +119,10 @@ function MyRequirement() {
                       Contact Details
                     </h3>
                     <p className="text-base sm:text-lg text-white">
-                      {myrequirement.studentName}
+                      {requirement.studentName}
                     </p>
                     <p className="text-base sm:text-lg text-white">
-                      {myrequirement.studentEmail}
+                      {requirement.studentEmail}
                     </p>
                   </div>
                   {/* Find Mentor Button */}

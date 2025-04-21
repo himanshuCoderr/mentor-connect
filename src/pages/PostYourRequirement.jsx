@@ -26,7 +26,7 @@ function RequestMentorship() {
       await setDoc(doc(db, "requirements", requirementId), requirement);
       console.log("Requirement submitted:", requirement);
 
-      navigate(`/myRequirement/${requirementId}`);
+      navigate(`/myRequirement`);
 
       setRequirement({
         requirementTitle: "",
@@ -51,7 +51,7 @@ function RequestMentorship() {
 
       {/* Request Mentorship Section */}
       <section className="bg-gradient-to-br from-gray-800 via-gray-900 to-blue-900 pt-24 pb-20 min-h-screen flex items-center">
-        <div className="container mx-auto px-6">
+        <div className="container lg:mt-8 mx-auto px-6">
           <div className="max-w-3xl mx-auto bg-gray-800 p-10 rounded-xl shadow-lg">
             <h2 className="text-4xl font-bold text-center text-white mb-2">
               Request Mentorship
@@ -88,6 +88,7 @@ function RequestMentorship() {
                       });
                     }}
                     placeholder="e.g., Need help with React"
+                    required
                   />
                 </div>
 
@@ -107,6 +108,7 @@ function RequestMentorship() {
                         category: e.target.value,
                       });
                     }}
+                    required
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
                   >
                     <option value="" disabled>
@@ -139,27 +141,9 @@ function RequestMentorship() {
                         budget: e.target.value,
                       });
                     }}
+                    required
                     placeholder="e.g., 500"
                   />
-                  <select
-                    value={requirement.budgetType}
-                    onChange={(e) =>
-                      setRequirement({
-                        ...requirement,
-                        budgetType: e.target.value,
-                      })
-                    }
-                    className="w-full mt-2 px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200"
-                  >
-                    <option value="" disabled>
-                      Budget Type
-                    </option>
-                    <option value="per-hour">Per Hour</option>
-                    <option value="per-day">Per Day</option>
-                    <option value="per-week">Per Week</option>
-                    <option value="per-month">Per Month</option>
-                    <option value="per-work">Per Work</option>
-                  </select>
                 </div>
               </div>
 
@@ -182,6 +166,7 @@ function RequestMentorship() {
                         preferredTime: e.target.value,
                       });
                     }}
+                    required
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
                     placeholder="e.g., Weekdays 5-7 PM"
                   />
@@ -203,33 +188,39 @@ function RequestMentorship() {
                         attachFile: e.target.value,
                       });
                     }}
+                    required
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:outline-none focus:border-yellow-400 transition duration-300"
                   />
                 </div>
 
-                {/* Contact Details */}
+                {/* Budget Type*/}
                 <div>
-                  <label className="block text-sm text-gray-300 mb-2 font-medium">
-                    Your Contact Details
-                  </label>
-                  <input
-                    type="text"
-                    value={requirement.name}
-                    onChange={(e) => {
-                      setRequirement({ ...requirement, name: e.target.value });
-                    }}
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-400 mb-2"
-                    placeholder="Enter Your FullName"
-                  />
-                  <input
-                    type="email"
-                    value={requirement.email}
-                    onChange={(e) => {
-                      setRequirement({ ...requirement, email: e.target.value });
-                    }}
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-400"
-                    placeholder="Enter Your Email"
-                  />
+                <p
+                    htmlFor="budget"
+                    className="block text-sm text-gray-300 mb-2 font-medium"
+                  >
+                    Budget Type
+                  </p>
+                <select
+                    value={requirement.budgetType}
+                    onChange={(e) =>
+                      setRequirement({
+                        ...requirement,
+                        budgetType: e.target.value,
+                      })
+                    }
+                    required
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200"
+                  >
+                    <option value="" disabled>
+                      Budget Type
+                    </option>
+                    <option value="per-hour">Per Hour</option>
+                    <option value="per-day">Per Day</option>
+                    <option value="per-week">Per Week</option>
+                    <option value="per-month">Per Month</option>
+                    <option value="per-work">Per Work</option>
+                  </select>
                 </div>
               </div>
 
@@ -246,6 +237,7 @@ function RequestMentorship() {
                   placeholder="Describe what you need help with..."
                   value={requirement.description}
                   rows="5"
+                  required
                   onChange={(e) => {
                     setRequirement({
                       ...requirement,

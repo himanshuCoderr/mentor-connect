@@ -28,7 +28,7 @@ const Footer = () => {
             </li>
             <li>
               <Link 
-                to="" 
+                to="/about" 
                 className="text-sm sm:text-base text-gray-400 hover:text-yellow-300 transition duration-300"
               >
                 About

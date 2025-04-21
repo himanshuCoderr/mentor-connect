@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { LoginProvider } from "./Context/LoginContext";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/LoginPage";
@@ -12,13 +13,16 @@ import OTP from "./pages/Otp";
 import FindMentors from "./pages/FindMentors";
 import MentorDashboard from "./pages/MentorDashboard";
 import RequirementDetail from "./pages/RequirementDetail";
-
+import About from "./pages/About";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+  },
+  {
+    path: "/about",
+    element: <About />,
   },
   {
     path: "/findMentors",
@@ -29,7 +33,7 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/postRequirment",
+    path: "/postRequirement",
     element: <RequestMentorship />,
   },
   {
@@ -68,6 +72,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <LoginProvider>
+      <RouterProvider router={router} />
+    </LoginProvider>
   </StrictMode>
 );

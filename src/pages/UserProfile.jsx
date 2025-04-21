@@ -1,25 +1,23 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
-
+import { useContext } from "react";
+import { LoginContext } from "../Context/LoginContext";
 function UserProfile() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [userEmail, setUserEmail] = useState(null);
-  const [userName, setUserName] = useState(null);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  const { userEmail, userName } = useContext(LoginContext);
+  const [UserProfilePhoto, setUserProfilePhoto] = useState(null);
 
   useEffect(() => {
-    const email = localStorage.getItem("userEmail");
-    const name = localStorage.getItem("userName");
-
-    if (email) setUserEmail(email);
-    if (name) setUserName(name);
+    const profilePhoto = localStorage.getItem("userProfilePhoto");
+    if (profilePhoto) setUserProfilePhoto(profilePhoto);
   }, []);
 
   // Hardcoded user data
   const user = {
     name: userName,
     email: userEmail,
-    profilePicture: "./assests/images/man2.webp",
+    profilePicture: UserProfilePhoto,
     bio: "A passionate learner looking to master web development and build real-world projects with the help of experienced mentors.",
     interests: ["React", "JavaScript", "CSS", "Python"],
     recentActivity: [
