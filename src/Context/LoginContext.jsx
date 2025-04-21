@@ -9,16 +9,16 @@ function LoginProvider({ children }) {
   const [userType, setUserType] = useState(null);
   const [userName, setUserName] = useState(null);
 
-  useEffect(() => {
-    // localStorage se user data lo
-    const email = localStorage.getItem("userEmail");
-    const type = localStorage.getItem("userType");
-    const name = localStorage.getItem("userName");
-    setUserEmail(email);
-    setUserType(type);
-    setUserName(name);
-    setLoginState(true);
-  }, []);
+  // useEffect(() => {
+  //   // localStorage se user data lo
+  //   const email = localStorage.getItem("userEmail");
+  //   const type = localStorage.getItem("userType");
+  //   const name = localStorage.getItem("userName");
+  //   setUserEmail(email);
+  //   setUserType(type);
+  //   setUserName(name);
+  //   setLoginState(true);
+  // }, []);
 
   return (
     <LoginContext.Provider

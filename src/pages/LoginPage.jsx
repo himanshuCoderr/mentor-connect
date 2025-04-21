@@ -7,7 +7,8 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-
+import { LoginContext } from "../Context/LoginContext";
+import { useContext } from "react";
 function Login() {
   const navigate = useNavigate();
   const [showPass, setShowPass] = useState(null);
@@ -15,7 +16,7 @@ function Login() {
     userEmail: "",
     userPassword: "",
   });
-
+  const { setLoginState, setUserType, setUserName, setUserEmail } = useContext(LoginContext);
   async function handleSignIn(e) {
     e.preventDefault();
     try {
@@ -49,6 +50,10 @@ function Login() {
 
       alert("User Logged In Successfully!");
       console.log("Firestore Data:", userData);
+      setLoginState(true);
+      setUserType(userData.userType);
+      setUserName(user.displayName || userData.name);
+      setUserEmail(user.email);
       // Navigate based on userType
       if (userData.userType === "mentor") {
         navigate("/mentorProfileCreate");
@@ -95,6 +100,11 @@ function Login() {
         "userProfilePhoto",
         userData.profilePhoto || user.photoURL || ""
       );
+
+      setLoginState(true);
+      setUserType(userData.userType);
+      setUserName(user.displayName || userData.name);
+      setUserEmail(user.email);
 
       alert("Login successful!");
       // Navigate based on userType
