@@ -13,6 +13,7 @@ function LoginProvider({ children }) {
   const [UserProfilePhoto, setUserProfilePhoto] = useState(null);
   const [loading, setLoading] = useState(true); // Initial auth check ke liye
 
+  
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -58,7 +59,7 @@ function LoginProvider({ children }) {
     // Cleanup listener
     return () => unsubscribe();
   }, []);
-
+  
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-900 text-white flex justify-center items-center">

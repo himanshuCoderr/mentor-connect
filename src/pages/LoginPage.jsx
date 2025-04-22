@@ -24,7 +24,7 @@ function Login() {
     userEmail: "",
     userPassword: "",
   });
-
+  const { setLoginState, setUserType, setUserName, setUserEmail } = useContext(LoginContext);
   async function handleSignIn(e) {
     e.preventDefault();
     try {
@@ -67,6 +67,10 @@ function Login() {
       alert("User Logged In Successfully!");
       console.log("Firestore Data:", userData);
 
+      setLoginState(true);
+      setUserType(userData.userType);
+      setUserName(user.displayName || userData.name);
+      setUserEmail(user.email);
       // Navigate based on userType
       if (userData.userType === "mentor") {
         navigate("/mentorProfileCreate");
@@ -114,13 +118,13 @@ function Login() {
         "userProfilePhoto",
         userData.profilePhoto || user.photoURL || ""
       );
-
       // Context state update
       setUserName(user.displayName || userData.name);
       setUserEmail(user.email);
       setUserType(userData.userType);
       setUserProfilePhoto(userData.profilePhoto || user.photoURL || "");
       setLoginState(true);
+
 
       alert("Login successful!");
       console.log("Firestore Data:", userData);
