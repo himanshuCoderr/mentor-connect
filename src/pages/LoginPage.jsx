@@ -7,11 +7,19 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import { LoginContext } from "../Context/LoginContext";
 import { useContext } from "react";
+import { LoginContext } from "../Context/LoginContext.jsx";
+
 function Login() {
   const navigate = useNavigate();
   const [showPass, setShowPass] = useState(null);
+  const {
+    setLoginState,
+    setUserEmail,
+    setUserName,
+    setUserType,
+    setUserProfilePhoto,
+  } = useContext(LoginContext);
   const [signIn, setSignIn] = useState({
     userEmail: "",
     userPassword: "",
@@ -39,6 +47,7 @@ function Login() {
 
       const userData = userSnap.data();
 
+      // localStorage
       localStorage.setItem("userName", user.displayName || userData.name);
       localStorage.setItem("userEmail", user.email);
       localStorage.setItem("userAccessToken", user.uid);
@@ -48,8 +57,16 @@ function Login() {
         userData.profilePhoto || user.photoURL || ""
       );
 
+      // Context state update
+      setUserName(user.displayName || userData.name);
+      setUserEmail(user.email);
+      setUserType(userData.userType);
+      setUserProfilePhoto(userData.profilePhoto || user.photoURL || "");
+      setLoginState(true);
+
       alert("User Logged In Successfully!");
       console.log("Firestore Data:", userData);
+
       setLoginState(true);
       setUserType(userData.userType);
       setUserName(user.displayName || userData.name);
@@ -92,6 +109,7 @@ function Login() {
 
       const userData = userSnap.data();
 
+      // localStorage
       localStorage.setItem("userName", user.displayName || userData.name);
       localStorage.setItem("userEmail", user.email);
       localStorage.setItem("userAccessToken", user.uid);
@@ -100,24 +118,23 @@ function Login() {
         "userProfilePhoto",
         userData.profilePhoto || user.photoURL || ""
       );
-
-      setLoginState(true);
-      setUserType(userData.userType);
+      // Context state update
       setUserName(user.displayName || userData.name);
       setUserEmail(user.email);
+      setUserType(userData.userType);
+      setUserProfilePhoto(userData.profilePhoto || user.photoURL || "");
+      setLoginState(true);
+
 
       alert("Login successful!");
+      console.log("Firestore Data:", userData);
+
       // Navigate based on userType
       if (userData.userType === "mentor") {
         navigate("/mentorProfileCreate");
       } else if (userData.userType === "student") {
         navigate("/postRequirement");
       }
-      console.log("Firestore Data:", userData);
-      console.log(
-        "Profile Photo set in localStorage:",
-        userData.profilePhoto || user.photoURL || ""
-      );
     } catch (error) {
       console.error("Google SignIn Error:", error.message);
       alert(error.message);
@@ -197,16 +214,14 @@ function Login() {
                 </a>
               </div>
 
-              {/* continue with google */}
+              {/* Continue with Google */}
               <div className="mt-6">
-                <p className=" block text-gray-300 mb-2">
-                  Continue with google
-                </p>
+                <p className="block text-gray-300 mb-2">Continue with Google</p>
                 <button
-                  className="w-full bg-gray-900  text-yellow-400 px-6 py-2 rounded-lg font-semibold shadow-md transform hover:scale-105 transition duration-300 mt-2"
+                  className="w-full bg-gray-900 text-yellow-400 px-6 py-2 rounded-lg font-semibold shadow-md transform hover:scale-105 transition duration-300 mt-2"
                   onClick={googleSignIn}
                 >
-                  Signin with google
+                  Sign in with Google
                 </button>
               </div>
 

@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { LoginContext } from "../../Context/LoginContext";
+import { auth } from "../../BACKEND/firebase";
+import { signOut } from "firebase/auth";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,17 +17,26 @@ const Navbar = () => {
     userName,
     setUserName,
     setLoginState,
+    setUserProfilePhoto,
   } = useContext(LoginContext);
 
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.clear(); // Saara data clear
-    setUserEmail(null);
-    setUserType(null);
-    setUserName(null);
-    setLoginState(false);
-    navigate("/login");
+  const handleLogout = async () => {
+    try {
+      await signOut(auth); // Firebase se sign out
+      localStorage.clear();
+      setLoginState(false);
+      setUserEmail(null);
+      setUserName(null);
+      setUserType(null);
+      setUserProfilePhoto(null);
+      alert("Logged out successfully!");
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout Error:", error.message);
+      alert("Logout failed: " + error.message);
+    }
   };
 
   return (

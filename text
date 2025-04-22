@@ -1,29 +1,29 @@
 attachFile
-: 
+:
 "C:\\fakepath\\man.jpg"
 budget
-: 
+:
 "199"
 budgetType
-: 
+:
 ""
 category
-: 
+:
 ""
 description
-: 
+:
 "I am working on a React project and struggling with state management using Redux. I have basic knowledge of React but find Redux confusing. I need mentorship to understand how to properly use Redux for global state management and optimize performance. Looking for a mentor who can guide me with real-world examples and best practices.\""
 email
-: 
+:
 "vshrivastav534@gmail.com"
 name
-: 
+:
 "Vishal"
 preferredTime
-: 
+:
 "Monday to Friday after 7 PM"
 requirementTitle
-: 
+:
 "Need Help with React State Management"
 
 
@@ -849,3 +849,47 @@ export default Signup;
 //   };
 
 // vishal123Shri@@$$
+
+// gogle sign in 
+localStorage.setItem("userName", user.displayName || userData.name);
+localStorage.setItem("userEmail", user.email);
+localStorage.setItem("userAccessToken", user.uid);
+localStorage.setItem("userType", userData.userType);
+localStorage.setItem(
+    "userProfilePhoto",
+    userData.profilePhoto || user.photoURL || ""
+);
+
+// handlesignin
+
+localStorage.setItem("userName", user.displayName || userData.name);
+localStorage.setItem("userEmail", user.email);
+localStorage.setItem("userAccessToken", user.uid);
+localStorage.setItem("userType", userData.userType);
+localStorage.setItem(
+    "userProfilePhoto",
+    userData.profilePhoto || user.photoURL || ""
+);
+
+// handlesignup
+localStorage.setItem("userName", formData.name || "User");
+localStorage.setItem("userEmail", formData.email);
+localStorage.setItem("userAccessToken", user.uid);
+localStorage.setItem("userType", formData.userType);
+localStorage.setItem(
+    "userProfilePhoto",
+    profileURL || user.photoURL || ""
+);
+
+// goglesignup
+localStorage.setItem(
+    "userName",
+    user.displayName || formData.name || "User"
+);
+localStorage.setItem("userEmail", user.email);
+localStorage.setItem("userAccessToken", user.uid);
+localStorage.setItem("userType", formData.userType);
+localStorage.setItem(
+    "userProfilePhoto",
+    profileURL || user.photoURL || ""
+);
