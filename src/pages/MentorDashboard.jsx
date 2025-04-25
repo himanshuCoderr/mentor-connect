@@ -52,7 +52,7 @@ function MentorDashboard() {
       <main className="flex-grow pt-24 pb-12 px-6">
         {" "}
         {/* Increased top padding */}
-        <div className="container mx-auto max-w-7xl">
+        <div className="container lg:mt-6 mx-auto max-w-7xl">
           <h1 className="text-3xl font-bold mb-8 text-yellow-400 text-center">
             Available Mentorship Requests
           </h1>

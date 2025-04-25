@@ -18,6 +18,7 @@ const Navbar = () => {
     setUserName,
     setLoginState,
     setUserProfilePhoto,
+    setIsApproved
   } = useContext(LoginContext);
 
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const Navbar = () => {
       setUserEmail(null);
       setUserName(null);
       setUserType(null);
+      setIsApproved(null)
       setUserProfilePhoto(null);
       alert("Logged out successfully!");
       navigate("/login");
@@ -49,7 +51,6 @@ const Navbar = () => {
           MentorConnect
         </Link>
 
-        {/* Hamburger Icon */}
         <button
           className="text-yellow-400 text-2xl md:hidden focus:outline-none"
           onClick={() => setIsOpen(!isOpen)}
@@ -58,7 +59,6 @@ const Navbar = () => {
           {isOpen ? "✖" : "☰"}
         </button>
 
-        {/* Navigation Links */}
         <nav
           className={`md:flex md:space-x-4 lg:space-x-6 xl:space-x-8 items-center absolute md:static top-full left-0 w-full md:w-auto bg-gray-900 md:bg-transparent transition-all duration-300 ease-in-out ${
             isOpen ? "block" : "hidden"
@@ -70,23 +70,34 @@ const Navbar = () => {
           >
             Home
           </Link>
+          <Link
+            to="/about"
+            className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
+          >
+            About
+          </Link>
+          {/* <Link
+            to="/mentorProfileCreate"
+            className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
+          >
+            Mentor Profile Creation
+          </Link> */}
 
           {userType === "student" && (
-            <Link
-              to="/postRequirement"
-              className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
-            >
-              Post Requirement
-            </Link>
-          )}
-
-          {userType === "student" && (
-            <Link
-              to="/myRequirement"
-              className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
-            >
-              My Requirement
-            </Link>
+            <>
+              <Link
+                to="/postRequirement"
+                className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
+              >
+                Post Requirement
+              </Link>
+              <Link
+                to="/myRequirement"
+                className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
+              >
+                My Requirement
+              </Link>
+            </>
           )}
 
           {userType === "mentor" && (
@@ -94,16 +105,11 @@ const Navbar = () => {
               to="/mentorDashboard"
               className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
             >
-              Mentor DashBoard
+              Mentor Dashboard
             </Link>
           )}
-          <Link
-            to="/about"
-            className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
-          >
-            About
-          </Link>
-          {userEmail ? (
+
+          {userEmail && userType !== "pendingMentor" ? (
             <div className="relative">
               <div className="flex flex-col items-center space-y-1 sm:px-6">
                 <button
@@ -114,7 +120,6 @@ const Navbar = () => {
                 </button>
                 <p className="text-white text-sm sm:text-base">{userName}</p>
               </div>
-              {/* Dropdown Menu */}
               {showMenu && (
                 <div className="absolute right-0 mt-2 w-30 bg-gray-800 rounded-md shadow-lg z-20">
                   <Link
@@ -138,20 +143,22 @@ const Navbar = () => {
               )}
             </div>
           ) : (
-            <>
-              <Link
-                to="/signup"
-                className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
-              >
-                Sign Up
-              </Link>
-              <Link
-                to="/login"
-                className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
-              >
-                Login
-              </Link>
-            </>
+            !userEmail && (
+              <>
+                <Link
+                  to="/signup"
+                  className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
+                >
+                  Sign Up
+                </Link>
+                <Link
+                  to="/login"
+                  className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
+                >
+                  Login
+                </Link>
+              </>
+            )
           )}
         </nav>
       </div>

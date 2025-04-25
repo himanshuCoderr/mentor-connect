@@ -893,3 +893,12 @@ localStorage.setItem(
     "userProfilePhoto",
     profileURL || user.photoURL || ""
 );
+
+// 
+// dekho merko abhi admin panel use nahi karna hai... merko aisa karna hai ki jab koi user mentor account create karta hai... aur approval send karta hai to jis aac se approval gaya hai users collection mein uske sath marge ho jaye aur, usko acc login karke mat do kynki wo jab approval true hoga uske baad ki wo mentor apna acc login kar paye tab tak mentor ko ke 4 - 5 line ka maessage show ho ki aapka approval under review hai..aur main abhi database se true kar du to mentor apna account login kar payega, kisa hai idea ?
+
+
+npm i redux 
+npm i react-redux 
+npm i redux thunk 
+npm i redx devtools ext
