@@ -8,7 +8,7 @@ const AboutPage = () => {
       <Navbar />
 
       <section className="bg-gradient-to-br from-gray-800 via-gray-900 to-blue-900 pt-24 pb-20 min-h-screen">
-        <div className="container mx-auto px-6">
+        <div className="container lg:mt-6 mx-auto px-6">
           {/* Hero Section */}
           <div className="max-w-4xl mx-auto text-center mb-16">
             <h1 className="text-4xl md:text-5xl font-bold text-yellow-400 mb-6">
