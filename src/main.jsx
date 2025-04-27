@@ -13,6 +13,8 @@ import OTP from "./pages/Otp";
 import FindMentors from "./pages/FindMentors";
 import MentorDashboard from "./pages/MentorDashboard";
 import RequirementDetail from "./pages/RequirementDetail";
+import AdminDashboard from "../src/admin/AdminDashboard";
+import ViewMentorDetails from "./admin/ViewMentorDetails";
 import About from "./pages/About";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 const router = createBrowserRouter([
@@ -67,6 +69,14 @@ const router = createBrowserRouter([
   {
     path: "/requirementDetail/:requirementId",
     element: <RequirementDetail />,
+  },
+  {
+    path: "adminDashBoard",
+    element: <AdminDashboard />,
+  },
+  {
+    path: "/viewMentorDetails/:id",
+    element: <ViewMentorDetails />,
   },
 ]);
 

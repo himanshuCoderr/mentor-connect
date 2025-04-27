@@ -22,11 +22,11 @@ const apiKey = "5eba8f49c8a995e0e09ddd9c";
 function MentorProfileCreation() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
-  const { userName } = useContext(LoginContext);
+  const { userName, UserProfilePhoto } = useContext(LoginContext);
 
   const [mentorApprovalData, setMentorApprovalData] = useState({
     fullName: userName || "",
-    profilePicture: "",
+    profilePicture: UserProfilePhoto || "",
     professionalTitle: "",
     bio: "",
     skills: [],
@@ -97,8 +97,6 @@ function MentorProfileCreation() {
     "Friday",
     "Saturday",
     "Sunday",
-    "WeekDays",
-    "Weekends"
   ];
   const timeZones = Intl.supportedValuesOf("timeZone");
   const currencySymbols = {

@@ -24,7 +24,7 @@ function Login() {
     userEmail: "",
     userPassword: "",
   });
-  const { setLoginState, setUserType, setUserName, setUserEmail } = useContext(LoginContext);
+
   async function handleSignIn(e) {
     e.preventDefault();
     try {
@@ -76,6 +76,8 @@ function Login() {
         navigate("/mentorProfileCreate");
       } else if (userData.userType === "student") {
         navigate("/postRequirement");
+      } else if (userData.userType === "admin") {
+        navigate("/adminDashBoard");
       }
     } catch (error) {
       console.error("Login Failed:", error.message);
@@ -125,7 +127,6 @@ function Login() {
       setUserProfilePhoto(userData.profilePhoto || user.photoURL || "");
       setLoginState(true);
 
-
       alert("Login successful!");
       console.log("Firestore Data:", userData);
 
@@ -134,6 +135,8 @@ function Login() {
         navigate("/mentorProfileCreate");
       } else if (userData.userType === "student") {
         navigate("/postRequirement");
+      } else if (userData.userType === "admin") {
+        navigate("/adminDashBoard");
       }
     } catch (error) {
       console.error("Google SignIn Error:", error.message);

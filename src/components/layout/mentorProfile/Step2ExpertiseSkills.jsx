@@ -10,6 +10,79 @@ const Step2ExpertiseSkills = ({
   categories,
   experienceLevels,
 }) => {
+  // Array of 50 skills/technologies for suggestions
+  const suggestedSkills = [
+    "React JS",
+    "React Native",
+    "JavaScript",
+    "TypeScript",
+    "Node.js",
+    "Express.js",
+    "Angular",
+    "Vue.js",
+    "HTML",
+    "CSS",
+    "SASS",
+    "Tailwind CSS",
+    "Bootstrap",
+    "Python",
+    "Django",
+    "Flask",
+    "Java",
+    "Spring Boot",
+    "C++",
+    "C#",
+    ".NET",
+    "PHP",
+    "Laravel",
+    "Ruby",
+    "Ruby on Rails",
+    "Go",
+    "Rust",
+    "SQL",
+    "MongoDB",
+    "MySQL",
+    "PostgreSQL",
+    "Firebase",
+    "AWS",
+    "Azure",
+    "Google Cloud",
+    "Docker",
+    "Kubernetes",
+    "GraphQL",
+    "REST API",
+    "Flutter",
+    "Swift",
+    "Kotlin",
+    "Dart",
+    "TensorFlow",
+    "PyTorch",
+    "Pandas",
+    "NumPy",
+    "Blockchain",
+    "Solidity",
+    "Web3.js",
+  ];
+
+  // Filter suggestions based on input
+  const getSuggestions = () => {
+    if (!newSkill.trim()) return [];
+    return suggestedSkills.filter((skill) =>
+      skill.toLowerCase().includes(newSkill.toLowerCase())
+    );
+  };
+
+  // Handle suggestion click - simplified version
+  const handleSuggestionClick = (suggestion) => {
+    if (!data.skills.includes(suggestion)) {
+      setData({
+        ...data,
+        skills: [...data.skills, suggestion],
+      });
+    }
+    setNewSkill("");
+  };
+
   return (
     <div className="bg-gray-900 rounded-lg shadow-xl animate-fade-in border border-gray-800">
       {/* Expertise Section */}
@@ -101,7 +174,7 @@ const Step2ExpertiseSkills = ({
               type="text"
               value={newSkill}
               onChange={(e) => setNewSkill(e.target.value)}
-              className="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-yellow-400 text-white placeholder-gray-500 transition-all"
+              className="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-yellow-400 text-white placeholder-Gray-500 transition-all"
               placeholder="Enter a skill (e.g. React, Python)"
               onKeyPress={(e) => e.key === "Enter" && addSkill()}
             />
@@ -113,6 +186,21 @@ const Step2ExpertiseSkills = ({
               Add Skill
             </button>
           </div>
+
+          {/* Suggestions - Fixed version */}
+          {newSkill.trim() && getSuggestions().length > 0 && (
+            <div className="absolute z-50 mt-1 w-[70%] bg-gray-800 border border-gray-700 rounded-lg shadow-lg max-h-60 overflow-y-auto mobile:max-h-40">
+              {getSuggestions().map((suggestion, index) => (
+                <div
+                  key={index}
+                  onClick={() => handleSuggestionClick(suggestion)}
+                  className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-white text-sm"
+                >
+                  {suggestion}
+                </div>
+              ))}
+            </div>
+          )}
 
           <div className="flex flex-wrap gap-2 mt-2">
             {data.skills.map((skill, index) => (
