@@ -18,7 +18,7 @@ const Navbar = () => {
     setUserName,
     setLoginState,
     setUserProfilePhoto,
-    setIsApproved
+    setIsApproved,
   } = useContext(LoginContext);
 
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ const Navbar = () => {
       setUserEmail(null);
       setUserName(null);
       setUserType(null);
-      setIsApproved(null)
+      setIsApproved(null);
       setUserProfilePhoto(null);
       alert("Logged out successfully!");
       navigate("/login");
@@ -82,6 +82,17 @@ const Navbar = () => {
           >
             Mentor Profile Creation
           </Link> */}
+
+          {userType === "admin" && (
+            <>
+              <Link
+                to="/adminDashboard"
+                className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
+              >
+                Admin DashBoard
+              </Link>
+            </>
+          )}
 
           {userType === "student" && (
             <>
