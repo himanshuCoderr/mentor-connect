@@ -19,13 +19,16 @@ const Navbar = () => {
     setLoginState,
     setUserProfilePhoto,
     setIsApproved,
+    reapprovalStatus,
+    reapprovalFields,
+    reapprovalReason,
   } = useContext(LoginContext);
 
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-      await signOut(auth); // Firebase se sign out
+      await signOut(auth);
       localStorage.clear();
       setLoginState(false);
       setUserEmail(null);
@@ -76,22 +79,23 @@ const Navbar = () => {
           >
             About
           </Link>
-          {/* <Link
-            to="/mentorProfileCreate"
-            className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
-          >
-            Mentor Profile Creation
-          </Link> */}
-
-          {userType === "admin" && (
-            <>
+          {userType === "pendingMentor" &&
+            reapprovalStatus === "reapproval_pending" && (
               <Link
-                to="/adminDashboard"
+                to={`/mentorProfileCreate/${auth.currentUser?.uid}`}
                 className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
               >
-                Admin DashBoard
+                Re-approve Profile
               </Link>
-            </>
+            )}
+
+          {userType === "admin" && (
+            <Link
+              to="/adminDashBoard"
+              className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
+            >
+              Admin DashBoard
+            </Link>
           )}
 
           {userType === "student" && (
@@ -122,17 +126,32 @@ const Navbar = () => {
 
           {userEmail && userType !== "pendingMentor" ? (
             <div className="relative">
-              <div className="flex flex-col items-center space-y-1 sm:px-6">
+              <div className="flex flex-col items-center space-y-1 sm:px-6 relative">
                 <button
                   onClick={() => setShowMenu(!showMenu)}
-                  className="text-base sm:text-lg hover:text-yellow-300 transition duration-300"
+                  className="text-base sm:text-lg hover:text-yellow-300 transition duration-300 relative"
                 >
                   <i className="hover:text-gray-900/90 hover:bg-yellow-300 p-[10px] rounded-full fa-solid fa-user text-white"></i>
+                  {reapprovalStatus === "reapproval_pending" && (
+                    <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center"></span>
+                  )}
                 </button>
                 <p className="text-white text-sm sm:text-base">{userName}</p>
               </div>
               {showMenu && (
-                <div className="absolute right-0 mt-2 w-30 bg-gray-800 rounded-md shadow-lg z-20">
+                <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg z-20">
+                  {reapprovalStatus === "reapproval_pending" && (
+                    <div className="px-4 py-2 text-sm text-white bg-gray-700">
+                      <p className="font-semibold">
+                        Notification from MentorConnect
+                      </p>
+                      <p className="mt-1">Status: Re-approval Pending</p>
+                      <p className="mt-1">
+                        Fields: {reapprovalFields.join(", ")}
+                      </p>
+                      <p className="mt-1">Reason: {reapprovalReason}</p>
+                    </div>
+                  )}
                   <Link
                     to={
                       userType === "mentor"
@@ -170,6 +189,56 @@ const Navbar = () => {
                 </Link>
               </>
             )
+          )}
+
+          {userEmail && userType === "pendingMentor" && (
+            <div className="relative">
+              <div className="flex flex-col items-center space-y-1 sm:px-6 relative">
+                <button
+                  onClick={() => setShowMenu(!showMenu)}
+                  className="text-base sm:text-lg hover:text-yellow-300 transition duration-300 relative"
+                >
+                  <i className="fa-solid fa-bell text-red-500 text-xl"></i>
+                  {reapprovalStatus === "reapproval_pending" && (
+                    <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center"></span>
+                  )}
+                </button>
+                <p className="text-white text-sm sm:text-base">{userName}</p>
+              </div>
+              {showMenu && (
+                <div className="absolute right-0 mt-2 w-56 bg-gray-800 rounded-md shadow-lg z-20">
+                  {reapprovalStatus === "reapproval_pending" && (
+                    <div className="px-4 py-2 text-sm text-white bg-gray-700">
+                      <p className="font-semibold">
+                        Notification from MentorConnect
+                      </p>
+                      <p className="mt-1">Status: Re-approval Pending</p>
+                      <p className="mt-1">
+                        Fields: {reapprovalFields.join(", ")}
+                      </p>
+                      <p className="mt-1">Reason: {reapprovalReason}</p>
+                    </div>
+                  )}
+                  <Link
+                    to={
+                      userType === "mentor"
+                        ? "/mentorProfile"
+                        : "/studentProfile"
+                    }
+                    className="block px-4 py-2 text-sm text-white hover:bg-gray-700"
+                    onClick={() => setShowMenu(false)}
+                  >
+                    View Profile
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 text-sm text-white hover:bg-gray-700"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           )}
         </nav>
       </div>
