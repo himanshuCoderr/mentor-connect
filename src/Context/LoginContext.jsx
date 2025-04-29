@@ -1,8 +1,8 @@
-// LoginContext.js
 import { createContext, useState, useEffect } from "react";
 import { auth, db } from "../BACKEND/firebase.js";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
+import { Link } from "react-router-dom";
 
 const LoginContext = createContext();
 
@@ -14,8 +14,10 @@ function LoginProvider({ children }) {
   const [UserProfilePhoto, setUserProfilePhoto] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isApproved, setIsApproved] = useState(null);
+  const [reapprovalStatus, setReapprovalStatus] = useState(null);
+  const [reapprovalFields, setReapprovalFields] = useState([]);
+  const [reapprovalReason, setReapprovalReason] = useState("");
 
-  
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -27,7 +29,6 @@ function LoginProvider({ children }) {
           if (userSnap.exists()) {
             const userData = userSnap.data();
 
-            // If userType is 'mentor', fetch from mentors collection
             if (userData.userType === "mentor") {
               const mentorRef = doc(db, "mentors", uid);
               const mentorSnap = await getDoc(mentorRef);
@@ -39,9 +40,10 @@ function LoginProvider({ children }) {
               setUserProfilePhoto(mentorData.profilePicture || user.photoURL);
               setIsApproved(true);
               setLoginState(true);
-            }
-            // If pendingMentor, fetch from mentorRequest collection
-            else if (userData.userType === "pendingMentor") {
+              setReapprovalStatus(null);
+              setReapprovalFields([]);
+              setReapprovalReason("");
+            } else if (userData.userType === "pendingMentor") {
               const mentorRequestRef = doc(db, "mentorRequest", uid);
               const mentorRequestSnap = await getDoc(mentorRequestRef);
               const mentorRequestData = mentorRequestSnap.exists()
@@ -53,19 +55,24 @@ function LoginProvider({ children }) {
               setUserType("pendingMentor");
               setUserProfilePhoto(userData.profilePhoto || user.photoURL);
               setIsApproved(mentorRequestData.isApproved || null);
+              setReapprovalStatus(mentorRequestData.status || null);
+              setReapprovalFields(mentorRequestData.reapproval_fields || []);
+              setReapprovalReason(mentorRequestData.reapproval_reason || "");
               if (mentorRequestData.isApproved === true) {
                 setLoginState(true);
               } else {
                 setLoginState(false);
               }
             } else {
-              // Normal student or other user types
               setUserName(user.displayName || userData.name);
               setUserEmail(user.email);
               setUserType(userData.userType);
               setUserProfilePhoto(userData.profilePhoto || user.photoURL);
               setIsApproved(null);
               setLoginState(true);
+              setReapprovalStatus(null);
+              setReapprovalFields([]);
+              setReapprovalReason("");
             }
           } else {
             setLoginState(false);
@@ -74,6 +81,9 @@ function LoginProvider({ children }) {
             setUserType(null);
             setUserProfilePhoto(null);
             setIsApproved(null);
+            setReapprovalStatus(null);
+            setReapprovalFields([]);
+            setReapprovalReason("");
           }
         } catch (error) {
           console.error("Error fetching user data:", error.message);
@@ -83,6 +93,9 @@ function LoginProvider({ children }) {
           setUserType(null);
           setUserProfilePhoto(null);
           setIsApproved(null);
+          setReapprovalStatus(null);
+          setReapprovalFields([]);
+          setReapprovalReason("");
         }
       } else {
         setLoginState(false);
@@ -91,13 +104,16 @@ function LoginProvider({ children }) {
         setUserType(null);
         setUserProfilePhoto(null);
         setIsApproved(null);
+        setReapprovalStatus(null);
+        setReapprovalFields([]);
+        setReapprovalReason("");
       }
       setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
-  
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-900 text-white flex justify-center items-center">
@@ -119,7 +135,11 @@ function LoginProvider({ children }) {
     );
   }
 
-  if (userType === "pendingMentor" && isApproved !== true) {
+  if (
+    userType === "pendingMentor" &&
+    isApproved !== true &&
+    reapprovalStatus !== "reapproval_pending"
+  ) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4">
         <div className="bg-gray-800 p-6 rounded-2xl shadow-md max-w-md text-center">
@@ -134,6 +154,51 @@ function LoginProvider({ children }) {
           <button
             onClick={() => signOut(auth)}
             className="mt-4 bg-yellow-400 text-gray-900 px-6 py-2 rounded-lg font-semibold hover:bg-yellow-500 transition duration-300"
+          >
+            Sign Out
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (
+    userType === "pendingMentor" &&
+    reapprovalStatus === "reapproval_pending"
+  ) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4">
+        <div className="bg-gray-800 p-6 rounded-2xl shadow-lg max-w-md text-center">
+          <h2 className="text-2xl font-semibold text-yellow-400 mb-4">
+            Re-approval Required 📝
+          </h2>
+          <p className="text-gray-300 text-base mb-2">
+            The MentorConnect Team has requested changes to your profile.
+          </p>
+          <p className="text-gray-300 text-base mb-4">
+            <strong>Status:</strong> Re-approval Pending
+          </p>
+          <ul className="text-left text-gray-300 list-disc list-inside mb-4">
+            {reapprovalFields.map((field) => (
+              <li key={field} className="capitalize">
+                {field.replace(/([A-Z])/g, " $1").trim()}
+              </li>
+            ))}
+          </ul>
+          {reapprovalReason && (
+            <p className="text-gray-300 text-base mb-4">
+              <strong>Reason:</strong> {reapprovalReason}
+            </p>
+          )}
+          <a
+            href={`/mentorProfileCreate/${auth.currentUser?.uid}`}
+            className="inline-block bg-yellow-400 text-gray-900 px-6 py-2 rounded-lg font-semibold hover:bg-yellow-500 transition duration-300"
+          >
+            Re-approve Profile
+          </a>
+          <button
+            onClick={() => signOut(auth)}
+            className="mt-4 bg-gray-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-gray-700 transition duration-300"
           >
             Sign Out
           </button>
@@ -157,6 +222,12 @@ function LoginProvider({ children }) {
         setUserProfilePhoto,
         isApproved,
         setIsApproved,
+        reapprovalStatus,
+        setReapprovalStatus,
+        reapprovalFields,
+        setReapprovalFields,
+        reapprovalReason,
+        setReapprovalReason,
       }}
     >
       {children}

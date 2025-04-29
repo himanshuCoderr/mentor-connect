@@ -16,7 +16,9 @@ import RequirementDetail from "./pages/RequirementDetail";
 import AdminDashboard from "../src/admin/AdminDashboard";
 import ViewMentorDetails from "./admin/ViewMentorDetails";
 import About from "./pages/About";
+// import ReApproveMentor from "./components/ReApproveMentor";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -43,7 +45,7 @@ const router = createBrowserRouter([
     element: <Signup />,
   },
   {
-    path: "/mentorProfileCreate",
+    path: "/mentorProfileCreate/:id", // Fixed route syntax
     element: <MentorProfileCreation />,
   },
   {
@@ -71,13 +73,17 @@ const router = createBrowserRouter([
     element: <RequirementDetail />,
   },
   {
-    path: "adminDashBoard",
+    path: "/adminDashBoard", // Fixed typo in path
     element: <AdminDashboard />,
   },
   {
     path: "/viewMentorDetails/:id",
     element: <ViewMentorDetails />,
   },
+  // {
+  //   path: "/reApproveMentor",
+  //   element: <ReApproveMentor />,
+  // },
 ]);
 
 createRoot(document.getElementById("root")).render(
