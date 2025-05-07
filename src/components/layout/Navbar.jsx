@@ -79,6 +79,12 @@ const Navbar = () => {
           >
             About
           </Link>
+          {/* <Link
+            to="/mentorDashboard"
+            className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
+          >
+            Menotr DashBaord
+          </Link> */}
           {userType === "pendingMentor" &&
             reapprovalStatus === "reapproval_pending" && (
               <Link
@@ -101,7 +107,7 @@ const Navbar = () => {
           {userType === "student" && (
             <>
               <Link
-                to="/postRequirement"
+                to="/postRequirement:id"
                 className="block py-2 px-4 sm:px-6 text-base sm:text-lg hover:text-yellow-300 transition duration-300"
               >
                 Post Requirement
@@ -219,23 +225,6 @@ const Navbar = () => {
                       <p className="mt-1">Reason: {reapprovalReason}</p>
                     </div>
                   )}
-                  <Link
-                    to={
-                      userType === "mentor"
-                        ? "/mentorProfile"
-                        : "/studentProfile"
-                    }
-                    className="block px-4 py-2 text-sm text-white hover:bg-gray-700"
-                    onClick={() => setShowMenu(false)}
-                  >
-                    View Profile
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-sm text-white hover:bg-gray-700"
-                  >
-                    Logout
-                  </button>
                 </div>
               )}
             </div>
@@ -247,3 +236,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

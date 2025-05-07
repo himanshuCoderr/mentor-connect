@@ -394,23 +394,35 @@ function MentorProfileCreation() {
 
     try {
       if (isReapproval) {
+        const originalData = (await getDoc(mentorRequestRef)).data();
         const updateData = {
           status: "pending_approval",
           updatedAt: new Date().toISOString(),
-          updatedBy: uid,
           reapproval_reason: "",
           reapproval_fields: [],
         };
+
+        // Ensure all reapprovalFields are processed and updated if changed
         reapprovalFields.forEach((field) => {
-          if (
-            mentorApprovalData[field] !== getDoc(mentorRequestRef).data()[field]
-          ) {
-            updateData[field] = mentorApprovalData[field];
+          const originalValue = originalData[field];
+          const newValue = mentorApprovalData[field];
+
+          // Handle arrays and other types correctly
+          if (Array.isArray(newValue)) {
+            if (
+              !Array.isArray(originalValue) ||
+              JSON.stringify(newValue) !== JSON.stringify(originalValue)
+            ) {
+              updateData[field] = newValue;
+            }
+          } else if (newValue !== originalValue) {
+            updateData[field] = newValue;
           }
         });
+
         await updateDoc(mentorRequestRef, updateData);
         alert("Profile updated successfully! Awaiting admin approval.");
-        navigate("/profile");
+        navigate("/login");
       } else {
         await setDoc(
           mentorRequestRef,

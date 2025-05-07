@@ -1,6 +1,6 @@
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { auth, db } from "../BACKEND/firebase.js";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -9,21 +9,46 @@ import { doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { LoginContext } from "../Context/LoginContext.jsx";
+import { login } from "../reducer/LogingReducer.jsx";
+import { useDispatch } from "react-redux";
 
 function Login() {
   const navigate = useNavigate();
   const [showPass, setShowPass] = useState(null);
+  const dispatch = useDispatch();
   const {
     setLoginState,
     setUserEmail,
     setUserName,
     setUserType,
     setUserProfilePhoto,
+    userType,
+    reapprovalStatus,
+    isApproved,
   } = useContext(LoginContext);
   const [signIn, setSignIn] = useState({
     userEmail: "",
     userPassword: "",
   });
+
+  useEffect(() => {
+    if (
+      userType === "pendingMentor" &&
+      reapprovalStatus === "reapproval_pending"
+    ) {
+      navigate("/reApproveMentor");
+    }
+  }, [userType, reapprovalStatus, navigate]);
+
+  useEffect(() => {
+    if (
+      userType === "pendingMentor" &&
+      isApproved !== true &&
+      reapprovalStatus !== "reapproval_pending"
+    ) {
+      navigate("/pendingMentor");
+    }
+  }, [userType, reapprovalStatus, navigate, isApproved]);
 
   async function handleSignIn(e) {
     e.preventDefault();
@@ -64,18 +89,23 @@ function Login() {
       setUserProfilePhoto(userData.profilePhoto || user.photoURL || "");
       setLoginState(true);
 
+      dispatch(
+        login({
+          userEmail: user.email,
+          userType: userData.userType,
+          userName: user.displayName || userData.name,
+          userProfilePhoto: userData.profilePhoto || user.photoURL || "",
+        })
+      );
+
       alert("User Logged In Successfully!");
       console.log("Firestore Data:", userData);
 
-      setLoginState(true);
-      setUserType(userData.userType);
-      setUserName(user.displayName || userData.name);
-      setUserEmail(user.email);
       // Navigate based on userType
       if (userData.userType === "mentor") {
-        navigate("/mentorProfileCreate");
+        navigate(`/mentorDashboard`);
       } else if (userData.userType === "student") {
-        navigate("/postRequirement");
+        navigate("/postRequirement:id");
       } else if (userData.userType === "admin") {
         navigate("/adminDashBoard");
       }
@@ -127,14 +157,23 @@ function Login() {
       setUserProfilePhoto(userData.profilePhoto || user.photoURL || "");
       setLoginState(true);
 
+      dispatch(
+        login({
+          userEmail: user.email,
+          userType: userData.userType,
+          userName: user.displayName || userData.name,
+          userProfilePhoto: userData.profilePhoto || user.photoURL || "",
+        })
+      );
+
       alert("Login successful!");
       console.log("Firestore Data:", userData);
 
       // Navigate based on userType
       if (userData.userType === "mentor") {
-        navigate("/mentorProfileCreate");
+        navigate(`/mentorDashboard`);
       } else if (userData.userType === "student") {
-        navigate("/postRequirement");
+        navigate("/postRequirement:id");
       } else if (userData.userType === "admin") {
         navigate("/adminDashBoard");
       }

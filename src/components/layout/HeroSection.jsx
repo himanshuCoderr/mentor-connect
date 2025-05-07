@@ -31,7 +31,7 @@ const HeroSection = () => {
             <button
               onClick={() => {
                 if (loginState) {
-                  navigate("/postRequirement");
+                  navigate("/postRequirement:id");
                 } else {
                   navigate("/login");
                 }

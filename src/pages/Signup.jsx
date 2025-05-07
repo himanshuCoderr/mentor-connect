@@ -181,7 +181,7 @@ function Signup() {
         profileURL || user.photoURL || ""
       );
 
-      // Context state update
+      // // Context state update
       setUserName(formData.name);
       setUserEmail(formData.email);
       setUserType(formData.userType);
@@ -190,9 +190,9 @@ function Signup() {
 
       // Redirect based on user type
       if (formData.userType === "student") {
-        navigate("/postRequirement");
+        navigate("/postRequirement:id");
       } else if (formData.userType === "mentor") {
-        navigate("/mentorProfileCreate");
+        navigate(`/mentorProfileCreate/${user.uid}`);
       } else {
         navigate("/signup");
       }
@@ -249,7 +249,7 @@ function Signup() {
         profileURL || user.photoURL || ""
       );
 
-      // Context state update
+      // // Context state update
       setUserName(user.displayName || formData.name);
       setUserEmail(user.email);
       setUserType(formData.userType);
@@ -258,9 +258,9 @@ function Signup() {
 
       // Redirect based on user type
       if (formData.userType === "student") {
-        navigate("/postRequirement");
+        navigate("/postRequirement:id");
       } else if (formData.userType === "mentor") {
-        navigate("/mentorProfileCreate");
+        navigate(`/mentorProfileCreate/${user.uid}`);
       }
 
       alert("Google Signup Successful!");

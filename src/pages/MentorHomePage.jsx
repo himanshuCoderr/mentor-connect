@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
-import { useState, useEffect } from "react";
 import { useContext } from "react";
 import { LoginContext } from "../Context/LoginContext.jsx";
 const MentorHome = () => {
@@ -17,7 +16,7 @@ const MentorHome = () => {
       <section className="bg-gradient-to-br from-gray-800 via-gray-900 to-blue-900 pt-24 pb-20">
         <div className="container lg:mt-6 mx-auto px-4 sm:px-6 text-center">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-6 animate-fade-in">
-            Welcome, <span className="text-yellow-400">{userName}</span>
+            {/* Welcome, <span className="text-yellow-400">{userName}</span> */}
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8">
             Shape the future of tech by mentoring aspiring coders with your

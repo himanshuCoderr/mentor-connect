@@ -23,7 +23,7 @@ const FeaturesSection = () => {
             <h2
               onClick={() => {
                 if (loginState) {
-                  navigate("/postRequirement");
+                  navigate("/postRequirement:id");
                 } else {
                   navigate("/login");
                 }

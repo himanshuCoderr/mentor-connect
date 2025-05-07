@@ -10,14 +10,17 @@ import MentorProfile from "./pages/MentorProfile";
 import UserProfile from "./pages/UserProfile";
 import MentorProfileCreation from "./pages/MentorProfileCreation";
 import OTP from "./pages/Otp";
+import PendingMentor from "./components/PendingMentor";
 import FindMentors from "./pages/FindMentors";
 import MentorDashboard from "./pages/MentorDashboard";
 import RequirementDetail from "./pages/RequirementDetail";
 import AdminDashboard from "../src/admin/AdminDashboard";
 import ViewMentorDetails from "./admin/ViewMentorDetails";
 import About from "./pages/About";
-// import ReApproveMentor from "./components/ReApproveMentor";
+import ReApproveMentor from "./components/ReApproveMentor";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./Store";
 
 const router = createBrowserRouter([
   {
@@ -37,7 +40,7 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/postRequirement",
+    path: "/postRequirement:id",
     element: <RequestMentorship />,
   },
   {
@@ -80,16 +83,23 @@ const router = createBrowserRouter([
     path: "/viewMentorDetails/:id",
     element: <ViewMentorDetails />,
   },
-  // {
-  //   path: "/reApproveMentor",
-  //   element: <ReApproveMentor />,
-  // },
+  {
+    path: "/reApproveMentor",
+    element: <ReApproveMentor />,
+  },
+  ,
+  {
+    path: "pendingMentor",
+    element: <PendingMentor />,
+  },
 ]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <LoginProvider>
-      <RouterProvider router={router} />
-    </LoginProvider>
+    <Provider store={store}>
+      <LoginProvider>
+        <RouterProvider router={router} />
+      </LoginProvider>
+    </Provider>
   </StrictMode>
 );

@@ -3,7 +3,7 @@ import Footer from "../components/layout/Footer";
 import { useContext } from "react";
 import { LoginContext } from "../Context/LoginContext";
 function UserProfile() {
-  // const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { userEmail, userName, UserProfilePhoto } = useContext(LoginContext);
 
   // Hardcoded user data
